@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Surprise Maker 🎁 Birthday & Anniversary</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;500;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff5f9;--card:#fff;--ink:#3a1030;--mute:#8a6b7f;--pink:#ff4f93;--line:#f3d9e6}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Poppins,sans-serif;background:var(--bg);color:var(--ink);padding-bottom:120px}
+header{text-align:center;padding:28px 18px 18px;background:linear-gradient(160deg,#2a0d33,#5a1748);color:#fff;border-radius:0 0 28px 28px}
+header h1{font-family:Pacifico;font-weight:400;font-size:30px}
+header p{opacity:.85;font-size:14px;margin-top:6px}
+.steps{display:flex;justify-content:center;gap:8px;margin-top:14px;font-size:12px;flex-wrap:wrap}
+.steps span{background:rgba(255,255,255,.14);padding:5px 11px;border-radius:999px}
+main{max-width:620px;margin:0 auto;padding:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;margin-bottom:14px;box-shadow:0 4px 16px rgba(160,40,100,.06)}
+.card h2{font-size:16px;margin-bottom:12px;display:flex;align-items:center;gap:8px}
+label{display:block;font-size:13px;font-weight:600;color:var(--mute);margin:10px 0 5px}
+input,textarea,select{width:100%;font:500 15px Poppins;color:var(--ink);border:1.5px solid var(--line);border-radius:12px;padding:11px 13px;background:#fffafc;outline:none;transition:.2s}
+input:focus,textarea:focus{border-color:var(--pink);background:#fff}
+textarea{min-height:170px;resize:vertical;line-height:1.5}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.themes{display:flex;gap:10px;flex-wrap:wrap}
+.th{width:54px;height:54px;border-radius:16px;cursor:pointer;border:3px solid transparent;position:relative}
+.th.sel{border-color:var(--ink)}
+.th small{position:absolute;bottom:-18px;left:0;right:0;text-align:center;font-size:10px;color:var(--mute)}
+.photos{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.ph{border:1.5px dashed #e8b7cf;border-radius:14px;padding:6px;background:#fffafc}
+.ph .pic{aspect-ratio:1;border-radius:10px;background:#fde7f1 center/cover;display:flex;align-items:center;justify-content:center;font-size:30px;cursor:pointer;position:relative;overflow:hidden}
+.ph .pic .x{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;font-size:13px;display:none;align-items:center;justify-content:center}
+.ph .pic.has .x{display:flex}
+.ph .pic .add{position:absolute;bottom:4px;font-size:10px;font-weight:600;color:var(--pink);background:#fff;padding:2px 7px;border-radius:999px}
+.ph input{margin-top:6px;padding:7px 8px;font-size:12px;border-radius:8px}
+.reason{display:flex;gap:8px;margin-bottom:8px}
+.reason input:first-child{width:58px;text-align:center;flex:none}
+.reason button{flex:none;width:40px;border:0;border-radius:10px;background:#fde7f1;color:var(--pink);font-size:18px;cursor:pointer}
+.small-btn{border:1.5px dashed var(--pink);background:none;color:var(--pink);font:600 14px Poppins;padding:9px 14px;border-radius:12px;cursor:pointer;width:100%}
+.toggle{display:flex;align-items:center;justify-content:space-between;margin-top:6px}
+.toggle input{width:auto;transform:scale(1.4)}
+.hint{font-size:12px;color:var(--mute);margin-top:6px}
+.bar{position:fixed;left:0;right:0;bottom:0;background:rgba(255,255,255,.96);backdrop-filter:blur(8px);border-top:1px solid var(--line);padding:12px;display:flex;gap:8px;justify-content:center;z-index:10}
+.bar button{flex:1;max-width:200px;font:600 14px Poppins;border:0;border-radius:14px;padding:13px 8px;cursor:pointer}
+.b1{background:linear-gradient(135deg,#ff4f93,#ff8a5c);color:#fff;box-shadow:0 6px 18px rgba(255,79,147,.4)}
+.b2{background:#2a0d33;color:#fff}
+.b3{background:#fde7f1;color:var(--pink)}
+.seg{display:flex;background:#fde7f1;border-radius:14px;padding:4px;margin-bottom:14px}
+.seg button{flex:1;border:0;background:none;font:600 14px Poppins;color:var(--mute);padding:10px;border-radius:11px;cursor:pointer}
+.seg button.sel{background:#fff;color:var(--pink);box-shadow:0 2px 8px rgba(160,40,100,.15)}
+.rels{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.rel{border:1.5px solid var(--line);background:#fffafc;border-radius:14px;padding:10px 4px;text-align:center;cursor:pointer;font:600 12px Poppins;color:var(--ink);transition:.2s}
+.rel b{display:block;font-size:26px;margin-bottom:2px;font-weight:400}
+.rel.sel{border-color:var(--pink);background:#fff0f6;box-shadow:0 0 0 3px rgba(255,79,147,.15)}
+.rel.off{opacity:.35;pointer-events:none}
+.lockbadge{display:inline-block;margin-top:12px;font-size:12px;font-weight:600;padding:6px 14px;border-radius:999px;background:#ffd27a;color:#3a1030;cursor:pointer}
+.lockbadge.ok{background:#2fe0a5;cursor:default}
+.ph .lk{position:absolute;bottom:4px;font-size:10px;font-weight:700;color:#fff;background:#3a1030;padding:2px 8px;border-radius:999px}
+.sheet{position:fixed;inset:0;z-index:35;background:rgba(30,5,25,.6);display:none;align-items:flex-end;justify-content:center}
+.sheet.on{display:flex;animation:fd .25s}
+@keyframes fd{from{opacity:0}}
+.sheet-box{background:#fff;width:100%;max-width:520px;max-height:92vh;overflow:auto;border-radius:26px 26px 0 0;padding:22px 18px 28px;position:relative;animation:su .35s cubic-bezier(.2,1,.3,1)}
+@keyframes su{from{transform:translateY(60px)}}
+.sx{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;border:0;background:#fde7f1;color:var(--pink);font-size:16px;cursor:pointer}
+.ptitle{font:800 20px Poppins;text-align:center}
+.price{text-align:center;margin:6px 0 10px}
+.price s{color:var(--mute);margin-right:6px}
+.price b{font-size:32px;color:var(--pink)}
+.feat{list-style:none;font-size:14px;display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;margin-bottom:12px}
+.forbox{font-size:13px;background:#fff8e6;border:1px dashed #f0c46a;border-radius:12px;padding:9px 12px;margin-bottom:8px}
+.order{font-size:13px;color:var(--mute);margin-bottom:12px;text-align:center}
+.order b{color:var(--ink);letter-spacing:1px}
+.paybody{background:#fffafc;border:1px solid var(--line);border-radius:16px;padding:14px;font-size:14px;line-height:1.6}
+.num{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1.5px solid var(--pink);border-radius:12px;padding:8px 12px;margin:6px 0;font:800 20px Poppins;letter-spacing:1px}
+.num button,.cp{border:0;background:var(--pink);color:#fff;font:600 12px Poppins;padding:6px 12px;border-radius:999px;cursor:pointer}
+.wa{display:block;text-align:center;text-decoration:none;margin-top:12px;background:#25d366;color:#fff;font:600 15px Poppins;padding:13px;border-radius:14px}
+.wa.dim{opacity:.5}
+.paylink{display:block;text-align:center;text-decoration:none;background:#1a1f71;color:#fff;font:600 15px Poppins;padding:13px;border-radius:14px;margin:8px 0}
+.unl{display:flex;gap:8px}
+.unl button{border:0;background:#2a0d33;color:#fff;font:600 14px Poppins;padding:0 18px;border-radius:12px;cursor:pointer}
+.dfy{display:block;text-align:center;margin-top:16px;font-size:13px;color:var(--pink);font-weight:600}
+hr{border:0;border-top:1px dashed var(--line);margin:16px 0 4px}
+#newGift{display:none;margin:10px auto 0;border:0;background:none;color:var(--pink);font:600 13px Poppins;text-decoration:underline;cursor:pointer}
+.how{display:grid;gap:8px;text-align:left;margin:14px 0}
+.how div{background:#fffafc;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px;display:flex;align-items:center;gap:10px}
+.how b{flex:none;width:26px;height:26px;border-radius:50%;background:var(--pink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px}
+.methods{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:14px}
+.m{font:800 12px Poppins;padding:6px 11px;border-radius:8px;color:#fff}
+.m.ep{background:#1fb35a}.m.jc{background:#d7262f}.m.cd{background:#1a1f71}
+.btn1{width:100%;border:0;border-radius:14px;padding:14px;font:600 15px Poppins;color:#fff;background:linear-gradient(135deg,#ff4f93,#ff8a5c);cursor:pointer;box-shadow:0 6px 18px rgba(255,79,147,.35)}
+.btn2{width:100%;border:0;border-radius:14px;padding:13px;font:600 15px Poppins;color:var(--ink);background:#fde7f1;cursor:pointer;margin-top:8px}
+#payHome .ptitle{display:none}
+#pv{position:fixed;inset:0;z-index:30;background:#000;display:none}
+#pv.on{display:block}
+#pv iframe{width:100%;height:100%;border:0}
+#pv .close{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:31;border:0;background:#fff;color:#2a0d33;font:600 13px Poppins;padding:9px 14px;border-radius:999px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.4)}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%) translateY(20px);background:#2a0d33;color:#fff;padding:12px 18px;border-radius:14px;font-size:14px;opacity:0;transition:.35s;z-index:40;max-width:90vw;text-align:center;pointer-events:none}
+#toast.on{opacity:1;transform:translateX(-50%)}
+#linkBox{display:none;margin-top:10px}
+#linkBox.on{display:block}
+footer{text-align:center;font-size:12px;color:var(--mute);margin-top:8px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Surprise Maker</h1>
+  <p>Birthday & anniversary surprises for every relationship 💌</p>
+  <div class="steps"><span>1. Fill details</span><span>2. Preview 👀</span><span>3. Unlock & send 🎁</span></div>
+  <div class="lockbadge" id="lockBadge"></div>
+</header>
+
+<main>
+  <div class="card">
+    <h2>💝 Who is this surprise for?</h2>
+    <div class="seg" id="occ"><button data-o="birthday">🎂 Birthday</button><button data-o="anniversary">💍 Anniversary</button></div>
+    <div class="rels" id="rels"></div>
+    <p class="hint" id="relHint">Rishta chunte hi saari wishes, letter aur reasons usi hisaab se ban jaate hain — phir jo chahein badal lein ✏️</p>
+  </div>
+
+  <div class="card">
+    <h2>🎂 Basic details</h2>
+    <div class="row">
+      <div><label id="nameLbl">Birthday person's name</label><input id="name" maxlength="24"></div>
+      <div><label>Your name</label><input id="from" maxlength="24"></div>
+    </div>
+    <div class="row">
+      <div><label id="ageLbl">Age (optional)</label><input id="age" maxlength="12"></div>
+      <div><label>Candles on cake</label><input id="candles" type="number" min="1" max="9"></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>🔐 Secret passcode</h2>
+    <div class="row">
+      <div><label>Passcode (4–6 digits)</label><input id="passcode" inputmode="numeric" maxlength="6"></div>
+      <div><label>Hint shown to them</label><input id="hint" maxlength="60"></div>
+    </div>
+    <p class="hint" id="nameLock" style="display:none"></p>
+    <p class="hint">Tip: use their birthday like 1411 (14 Nov) so they can guess it.</p>
+  </div>
+
+  <div class="card">
+    <h2>🎨 Colour theme</h2>
+    <div class="themes" id="themes"></div><div style="height:16px"></div>
+  </div>
+
+  <div class="card">
+    <h2>✍️ Texts on screen</h2>
+    <div class="row">
+      <div><label>Big heading</label><input id="heading" maxlength="30"></div>
+      <div><label>Badge ({age} = number)</label><input id="ageLabel" maxlength="30"></div>
+    </div>
+    <div class="row" style="grid-template-columns:80px 1fr">
+      <div><label>Emoji</label><input id="askEmoji" maxlength="4" style="text-align:center"></div>
+      <div><label>Question line</label><input id="askLine" maxlength="70"></div>
+    </div>
+    <label>Reasons heading</label><input id="reasonsTitle" maxlength="40">
+  </div>
+
+  <div class="card">
+    <h2>📸 Photos (up to 6)</h2>
+    <div class="photos" id="photos"></div>
+    <p class="hint">Tap a box to add a photo. No photo = a cute emoji is shown instead.</p>
+  </div>
+
+  <div class="card">
+    <h2>💞 Reasons they're special</h2>
+    <div id="reasons"></div>
+    <button class="small-btn" id="addReason">+ Add a reason</button>
+  </div>
+
+  <div class="card">
+    <h2>✉️ Your letter</h2>
+    <textarea id="letter" maxlength="2000"></textarea>
+    <p class="hint" id="lcount"></p>
+  </div>
+
+  <div class="card">
+    <h2>🎁 Final surprise</h2>
+    <label>Big heading</label><input id="finalTitle" maxlength="40">
+    <label>Last message</label><input id="finalMsg" maxlength="160">
+    <div class="toggle"><label style="margin:0">🎵 Play Happy Birthday music</label><input type="checkbox" id="playMusic"></div>
+  </div>
+
+  <div class="card" id="payCard">
+    <h2 id="payCardTitle">💳 Payment & unlock</h2>
+    <div id="payHome"></div>
+    <div id="paidBox" style="display:none;text-align:center;font-size:14px">✅ Payment confirmed — order <b id="paidOrder"></b><br><span class="hint">Ab photos lagayein aur neeche se Download / Get link karein.</span></div>
+  </div>
+
+  <div class="card" id="linkBox">
+    <h2>🔗 Your gift link</h2>
+    <input id="linkOut" readonly onclick="this.select()">
+    <p class="hint">Link mein photos shamil nahi hotin (link chhota rakhne ke liye). Photos ke saath bhejne ke liye "Download" wali file use karein.</p>
+  </div>
+
+  <footer><div id="brand"></div><button id="newGift">➕ Start a new surprise (new order)</button></footer>
+</main>
+
+<div class="bar">
+  <button class="b1" id="preview">👀 Preview</button>
+  <button class="b2" id="download">⬇️ Download</button>
+  <button class="b3" id="link">🔗 Get link</button>
+</div>
+
+<div id="pv"><button class="close" id="pvClose">✏️ Back to edit</button><iframe id="frame" allow="autoplay"></iframe></div>
+<div class="sheet" id="pay"><div class="sheet-box" id="paySlot">
+  <button class="sx" id="payClose">✕</button>
+  <div id="payPanel">
+  <div class="ptitle">🔓 Unlock your surprise</div>
+  <div class="price"><s id="oldPrice"></s><b id="priceTx"></b></div>
+  <ul class="feat"><li>✅ 6 real photos</li><li>✅ Shareable link</li><li>✅ Download file</li><li>✅ Music & all themes</li></ul>
+  <div class="forbox" id="pFor"></div>
+  <div class="order">Order ID: <b id="pOrder"></b></div>
+  <div class="seg" id="payTabs"><button data-m="easypaisa">🟢 Easypaisa</button><button data-m="jazzcash">🔴 JazzCash</button><button data-m="card">💳 Card</button></div>
+  <div class="paybody" id="payBody"></div>
+  <label>Transaction ID (TID) / Reference</label><input id="tid" placeholder="e.g. 31245678901" maxlength="30">
+  <a class="wa dim" id="waProof" target="_blank" rel="noopener">📲 Send payment proof on WhatsApp</a>
+  <p class="hint" style="text-align:center">Payment check karke 5–15 minute mein WhatsApp par aapka unlock code aa jayega.</p>
+  <hr>
+  <label>Unlock code mil gaya? Yahan paste karein 👇</label>
+  <div class="unl"><input id="code" placeholder="SM1-…"><button id="unlockBtn">Unlock</button></div>
+  <a class="dfy" id="dfy" target="_blank" rel="noopener"></a>
+  </div>
+</div></div>
+<div class="sheet" id="welcome"><div class="sheet-box" style="text-align:center">
+  <div style="font-size:54px">🎁</div>
+  <div class="ptitle" style="font-size:22px">Apni surprise website banayein</div>
+  <p class="hint" style="font-size:14px;margin:6px 0 4px">Birthday & anniversary — sister, brother, bestie, husband, wife, GF, BF, mom, dad 💖</p>
+  <div class="price"><s id="wOld"></s><b id="wPrice"></b></div>
+  <div class="how"><div><b>1</b>Free mein banao & preview dekho 👀</div><div><b>2</b>Easypaisa / JazzCash / Card se pay karo 💳</div><div><b>3</b>Photos lagao, link ya file bhejo 🎉</div></div>
+  <div class="methods"><span class="m ep">easypaisa</span><span class="m jc">JazzCash</span><span class="m cd">VISA · Mastercard</span></div>
+  <button class="btn1" id="wStart">✨ Free mein banana shuru karein</button>
+  <button class="btn2" id="wPay">💳 Abhi pay karein</button>
+</div></div>
+<div id="toast"></div>
+
+<script>
+/* ============ WHITE-LABEL: put your store name here ============ */
+const BRAND = "Made with 💖 by YourStoreName";
+const SHOP = {
+  price: 299, oldPrice: 599, currency: "Rs",
+  whatsapp: "923157767883",                        // your WhatsApp number, country code first, no + or spaces
+  easypaisa: { number: "0315-7767883", title: "Maria Bibi" },
+  jazzcash:  { number: "0315-7767883", title: "Maria Bibi" },
+  cardLink: "",                                     // paste a "pay by link" URL from your card gateway; empty = shows "coming soon"
+  doneForYouPrice: 999
+};
+const PUBKEY = {"kty": "EC", "crv": "P-256", "x": "9VEzXzrXKU1BA9RJaaZFcjF1gBH6YXNvFsm5ZmeULRs", "y": "dU0pzKRIn5gxGYSqPXsMIeWeGKaaaOWNNx4Uo8up3Sw"};                          // do not change (matches your admin page)
+/* ================================================================ */
+
+const GIFT_B64 = "PCFET0NUWVBFIGh0bWw+CjxodG1sIGxhbmc9ImVuIj4KPGhlYWQ+CjxtZXRhIGNoYXJzZXQ9IlVURi04Ij4KPG1ldGEgbmFtZT0idmlld3BvcnQiIGNvbnRlbnQ9IndpZHRoPWRldmljZS13aWR0aCwgaW5pdGlhbC1zY2FsZT0xLCBtYXhpbXVtLXNjYWxlPTEiPgo8dGl0bGU+QSBMaXR0bGUgU3VycHJpc2UgRm9yIFlvdSDwn46BPC90aXRsZT4KPCEtLUNGRy0tPgo8bGluayByZWw9InByZWNvbm5lY3QiIGhyZWY9Imh0dHBzOi8vZm9udHMuZ29vZ2xlYXBpcy5jb20iPgo8bGluayBocmVmPSJodHRwczovL2ZvbnRzLmdvb2dsZWFwaXMuY29tL2NzczI/ZmFtaWx5PVBhY2lmaWNvJmZhbWlseT1Qb3BwaW5zOndnaHRANDAwOzYwMDs4MDAmZmFtaWx5PUNhdmVhdDp3Z2h0QDUwMDs3MDAmZGlzcGxheT1zd2FwIiByZWw9InN0eWxlc2hlZXQiPgo8c3R5bGU+Ci8qID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PQogICDinI/vuI8gIEVESVQgRVZFUllUSElORyBJTiBUSEUgQ09ORklHIChpbiB0aGUgc2NyaXB0IGF0IHRoZSBib3R0b20pCiAgID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PSAqLwo6cm9vdHsKICAtLWJnMTojMWEwYjJlOyAtLWJnMjojM2IwZjNmOyAtLXBpbms6I2ZmNWM5YTsgLS1waW5rMjojZmZiM2QxOwogIC0tZ29sZDojZmZkMjdhOyAtLWNyZWFtOiNmZmY2ZWM7IC0tcmVkOiNiMzEyMmU7IC0tcmVkMjojNmQwYTFjOwp9Cip7Ym94LXNpemluZzpib3JkZXItYm94O21hcmdpbjowO3BhZGRpbmc6MDstd2Via2l0LXRhcC1oaWdobGlnaHQtY29sb3I6dHJhbnNwYXJlbnR9Cmh0bWwsYm9keXtoZWlnaHQ6MTAwJTtvdmVyZmxvdzpoaWRkZW59CmJvZHl7Zm9udC1mYW1pbHk6UG9wcGlucyxzYW5zLXNlcmlmO2NvbG9yOiNmZmY7YmFja2dyb3VuZDpyYWRpYWwtZ3JhZGllbnQoZWxsaXBzZSBhdCB0b3AsdmFyKC0tYmcyKSx2YXIoLS1iZzEpIDcwJSk7dXNlci1zZWxlY3Q6bm9uZX0KY2FudmFzI2Z4e3Bvc2l0aW9uOmZpeGVkO2luc2V0OjA7cG9pbnRlci1ldmVudHM6bm9uZTt6LWluZGV4OjUwfQouc3RhcnN7cG9zaXRpb246Zml4ZWQ7aW5zZXQ6MDtwb2ludGVyLWV2ZW50czpub25lO3otaW5kZXg6MH0KLnN0YXJzIGl7cG9zaXRpb246YWJzb2x1dGU7d2lkdGg6MnB4O2hlaWdodDoycHg7YmFja2dyb3VuZDojZmZmO2JvcmRlci1yYWRpdXM6NTAlO2FuaW1hdGlvbjp0dyAzcyBpbmZpbml0ZSBlYXNlLWluLW91dH0KQGtleWZyYW1lcyB0d3swJSwxMDAle29wYWNpdHk6LjE1fTUwJXtvcGFjaXR5OjF9fQoKLnNjZW5le3Bvc2l0aW9uOmZpeGVkO2luc2V0OjA7ZGlzcGxheTpmbGV4O2ZsZXgtZGlyZWN0aW9uOmNvbHVtbjthbGlnbi1pdGVtczpjZW50ZXI7anVzdGlmeS1jb250ZW50OmNlbnRlcjtwYWRkaW5nOjI0cHg7dGV4dC1hbGlnbjpjZW50ZXI7ei1pbmRleDoyO29wYWNpdHk6MDtwb2ludGVyLWV2ZW50czpub25lO3RyYW5zZm9ybTpzY2FsZSguOTYpO3RyYW5zaXRpb246b3BhY2l0eSAuOHMsdHJhbnNmb3JtIC44c30KLnNjZW5lLm9ue29wYWNpdHk6MTtwb2ludGVyLWV2ZW50czphdXRvO3RyYW5zZm9ybTpub25lfQoKaDEuc2NyaXB0e2ZvbnQtZmFtaWx5OlBhY2lmaWNvLGN1cnNpdmU7Zm9udC13ZWlnaHQ6NDAwO2xpbmUtaGVpZ2h0OjEuMTV9Ci5zdWJ7b3BhY2l0eTouODU7Zm9udC1zaXplOjE1cHg7bWFyZ2luLXRvcDoxMHB4fQouYnRue2ZvbnQ6NjAwIDE2cHggUG9wcGlucztib3JkZXI6MDtib3JkZXItcmFkaXVzOjk5OXB4O3BhZGRpbmc6MTNweCAzMHB4O2N1cnNvcjpwb2ludGVyO2NvbG9yOiNmZmY7YmFja2dyb3VuZDpsaW5lYXItZ3JhZGllbnQoMTM1ZGVnLHZhcigtLXBpbmspLCNmZjhhNWMpO2JveC1zaGFkb3c6MCA4cHggMjRweCByZ2JhKDI1NSw5MiwxNTQsLjQ1KTt0cmFuc2l0aW9uOnRyYW5zZm9ybSAuMnN9Ci5idG46YWN0aXZle3RyYW5zZm9ybTpzY2FsZSguOTQpfQouYnRuLmdob3N0e2JhY2tncm91bmQ6cmdiYSgyNTUsMjU1LDI1NSwuMTIpO2JveC1zaGFkb3c6bm9uZTtib3JkZXI6MS41cHggc29saWQgcmdiYSgyNTUsMjU1LDI1NSwuMzUpfQoubmV4dHttYXJnaW4tdG9wOjI2cHg7b3BhY2l0eTowO3RyYW5zaXRpb246b3BhY2l0eSAuNnN9Ci5uZXh0LnNob3d7b3BhY2l0eToxfQoKLyogcHJvZ3Jlc3MgKi8KI3Byb2d7cG9zaXRpb246Zml4ZWQ7dG9wOjE0cHg7bGVmdDo1MCU7dHJhbnNmb3JtOnRyYW5zbGF0ZVgoLTUwJSk7ZGlzcGxheTpmbGV4O2dhcDo3cHg7ei1pbmRleDo0MDtvcGFjaXR5OjA7dHJhbnNpdGlvbjpvcGFjaXR5IC41c30KI3Byb2cuc2hvd3tvcGFjaXR5OjF9CiNwcm9nIHNwYW57Zm9udC1zaXplOjEycHg7ZmlsdGVyOmdyYXlzY2FsZSgxKSBvcGFjaXR5KC4zNSk7dHJhbnNpdGlvbjouNHN9CiNwcm9nIHNwYW4uZG9uZXtmaWx0ZXI6bm9uZX0KI211c2lje3Bvc2l0aW9uOmZpeGVkO3RvcDoxMHB4O3JpZ2h0OjEycHg7ei1pbmRleDo0MDt3aWR0aDo0MHB4O2hlaWdodDo0MHB4O2JvcmRlci1yYWRpdXM6NTAlO2JvcmRlcjowO2JhY2tncm91bmQ6cmdiYSgyNTUsMjU1LDI1NSwuMTQpO2NvbG9yOiNmZmY7Zm9udC1zaXplOjE4cHg7Y3Vyc29yOnBvaW50ZXI7ZGlzcGxheTpub25lfQoKLyogLS0tLS0tLS0tLSAwLiBMT0NLIC0tLS0tLS0tLS0gKi8KLmxvY2tjYXJke2JhY2tncm91bmQ6cmdiYSgyNTUsMjU1LDI1NSwuMDgpO2JhY2tkcm9wLWZpbHRlcjpibHVyKDEycHgpO2JvcmRlcjoxcHggc29saWQgcmdiYSgyNTUsMjU1LDI1NSwuMTUpO2JvcmRlci1yYWRpdXM6MjhweDtwYWRkaW5nOjI4cHggMjJweDt3aWR0aDptaW4oMzQwcHgsOTJ2dyl9Ci5sb2NraWNvbntmb250LXNpemU6NDJweDthbmltYXRpb246Ym9iIDJzIGluZmluaXRlIGVhc2UtaW4tb3V0fQpAa2V5ZnJhbWVzIGJvYns1MCV7dHJhbnNmb3JtOnRyYW5zbGF0ZVkoLTZweCl9fQouZG90c3tkaXNwbGF5OmZsZXg7Z2FwOjEycHg7anVzdGlmeS1jb250ZW50OmNlbnRlcjttYXJnaW46MThweCAwIDZweH0KLmRvdHMgYnt3aWR0aDoxNnB4O2hlaWdodDoxNnB4O2JvcmRlci1yYWRpdXM6NTAlO2JvcmRlcjoycHggc29saWQgdmFyKC0tcGluazIpO3RyYW5zaXRpb246LjJzfQouZG90cyBiLmZ7YmFja2dyb3VuZDp2YXIoLS1waW5rKTtib3JkZXItY29sb3I6dmFyKC0tcGluayk7Ym94LXNoYWRvdzowIDAgMTJweCB2YXIoLS1waW5rKX0KLnNoYWtle2FuaW1hdGlvbjpzaGFrZSAuNDVzfQpAa2V5ZnJhbWVzIHNoYWtlezIwJSw2MCV7dHJhbnNmb3JtOnRyYW5zbGF0ZVgoLTEwcHgpfTQwJSw4MCV7dHJhbnNmb3JtOnRyYW5zbGF0ZVgoMTBweCl9fQouaGludHtmb250LXNpemU6MTNweDtvcGFjaXR5Oi43O21pbi1oZWlnaHQ6MjBweH0KLnBhZHtkaXNwbGF5OmdyaWQ7Z3JpZC10ZW1wbGF0ZS1jb2x1bW5zOnJlcGVhdCgzLDY0cHgpO2dhcDoxNHB4O2p1c3RpZnktY29udGVudDpjZW50ZXI7bWFyZ2luLXRvcDoxNHB4fQoucGFkIGJ1dHRvbnt3aWR0aDo2NHB4O2hlaWdodDo2NHB4O2JvcmRlci1yYWRpdXM6NTAlO2JvcmRlcjowO2ZvbnQ6NjAwIDIycHggUG9wcGlucztjb2xvcjojZmZmO2JhY2tncm91bmQ6cmdiYSgyNTUsMjU1LDI1NSwuMTIpO2N1cnNvcjpwb2ludGVyO3RyYW5zaXRpb246LjE1c30KLnBhZCBidXR0b246YWN0aXZle2JhY2tncm91bmQ6dmFyKC0tcGluayk7dHJhbnNmb3JtOnNjYWxlKC45KX0KCi8qIC0tLS0tLS0tLS0gMS4gQVNLIC0tLS0tLS0tLS0gKi8KLmJlYXJ7Zm9udC1zaXplOjg2cHg7YW5pbWF0aW9uOmJvYiAyLjJzIGluZmluaXRlIGVhc2UtaW4tb3V0O2ZpbHRlcjpkcm9wLXNoYWRvdygwIDEwcHggMjBweCByZ2JhKDAsMCwwLC40KSl9Ci5hc2stcm93e2Rpc3BsYXk6ZmxleDtnYXA6MTZweDttYXJnaW4tdG9wOjI4cHg7cG9zaXRpb246cmVsYXRpdmU7bWluLWhlaWdodDo2MHB4O2p1c3RpZnktY29udGVudDpjZW50ZXJ9CiNub0J0bntwb3NpdGlvbjpyZWxhdGl2ZTt0cmFuc2l0aW9uOnRyYW5zZm9ybSAuMjVzfQojYXNrVHh0e2ZvbnQtc2l6ZToxNXB4O21hcmdpbi10b3A6MTRweDttaW4taGVpZ2h0OjIycHg7Y29sb3I6dmFyKC0tcGluazIpfQoKLyogLS0tLS0tLS0tLSAyLiBDVVJUQUlOIC0tLS0tLS0tLS0gKi8KI3Mye3BhZGRpbmc6MDtvdmVyZmxvdzpoaWRkZW59Ci5zdGFnZS1iZ3twb3NpdGlvbjphYnNvbHV0ZTtpbnNldDowO2JhY2tncm91bmQ6cmFkaWFsLWdyYWRpZW50KGNpcmNsZSBhdCA1MCUgNDAlLCM1YTE4MzAsIzE0MDYxMiA3MCUpfQouc3BvdHtwb3NpdGlvbjphYnNvbHV0ZTt0b3A6LTEwJTtsZWZ0OjUwJTt3aWR0aDoxNDB2bWF4O2hlaWdodDoxNDB2bWF4O3RyYW5zZm9ybTp0cmFuc2xhdGVYKC01MCUpO2JhY2tncm91bmQ6cmFkaWFsLWdyYWRpZW50KGNpcmNsZSBhdCA1MCUgMzAlLHJnYmEoMjU1LDIzMCwxNzAsLjI1KSx0cmFuc3BhcmVudCA0MCUpO3BvaW50ZXItZXZlbnRzOm5vbmV9Ci5yZXZlYWx7cG9zaXRpb246cmVsYXRpdmU7ei1pbmRleDoxO3BhZGRpbmc6MjBweH0KLnJldmVhbCBoMXtmb250LXNpemU6Y2xhbXAoNDRweCwxM3Z3LDk2cHgpO2JhY2tncm91bmQ6bGluZWFyLWdyYWRpZW50KDE4MGRlZywjZmZmM2M0LHZhcigtLWdvbGQpIDUwJSwjYzk4YTIyKTstd2Via2l0LWJhY2tncm91bmQtY2xpcDp0ZXh0O2JhY2tncm91bmQtY2xpcDp0ZXh0O2NvbG9yOnRyYW5zcGFyZW50O2ZpbHRlcjpkcm9wLXNoYWRvdygwIDRweCAxOHB4IHJnYmEoMjU1LDIwMCw5MCwuNSkpfQoucmV2ZWFsIC5uYW1le2ZvbnQtZmFtaWx5OlBhY2lmaWNvO2ZvbnQtc2l6ZTpjbGFtcCgzNHB4LDEwdncsNzBweCk7Y29sb3I6dmFyKC0tcGluazIpO3RleHQtc2hhZG93OjAgMCAyMnB4IHZhcigtLXBpbmspfQoucmV2ZWFsIC5hZ2V7ZGlzcGxheTppbmxpbmUtYmxvY2s7bWFyZ2luLXRvcDoxNHB4O2ZvbnQtd2VpZ2h0OjgwMDtsZXR0ZXItc3BhY2luZzo0cHg7Zm9udC1zaXplOjEzcHg7cGFkZGluZzo2cHggMTZweDtib3JkZXI6MXB4IHNvbGlkIHZhcigtLWdvbGQpO2JvcmRlci1yYWRpdXM6OTk5cHg7Y29sb3I6dmFyKC0tZ29sZCl9Ci5jdXJ0YWlue3Bvc2l0aW9uOmFic29sdXRlO3RvcDowO2JvdHRvbTowO3dpZHRoOjUxJTt6LWluZGV4OjU7dHJhbnNpdGlvbjp0cmFuc2Zvcm0gMi42cyBjdWJpYy1iZXppZXIoLjcsMCwuMiwxKTsKICBiYWNrZ3JvdW5kOnJlcGVhdGluZy1saW5lYXItZ3JhZGllbnQoOTBkZWcsdmFyKC0tcmVkMikgMCA2cHgsdmFyKC0tcmVkKSAxOHB4IDMwcHgsdmFyKC0tcmVkMikgNDRweCA1MHB4KTtib3gtc2hhZG93Omluc2V0IDAgLTYwcHggODBweCByZ2JhKDAsMCwwLC41KX0KLmN1cnRhaW4ubHtsZWZ0OjA7dHJhbnNmb3JtLW9yaWdpbjpsZWZ0fQouY3VydGFpbi5ye3JpZ2h0OjB9Ci5jdXJ0YWluLmw6OmFmdGVyLC5jdXJ0YWluLnI6OmFmdGVye2NvbnRlbnQ6IiI7cG9zaXRpb246YWJzb2x1dGU7Ym90dG9tOjA7bGVmdDowO3JpZ2h0OjA7aGVpZ2h0OjIycHg7YmFja2dyb3VuZDpyZXBlYXRpbmctbGluZWFyLWdyYWRpZW50KDkwZGVnLHZhcigtLWdvbGQpIDAgOHB4LCNiODg2MmEgOHB4IDE2cHgpfQoub3BlbiAuY3VydGFpbi5se3RyYW5zZm9ybTp0cmFuc2xhdGVYKC05NiUpIHNrZXdYKC0zZGVnKX0KLm9wZW4gLmN1cnRhaW4ucnt0cmFuc2Zvcm06dHJhbnNsYXRlWCg5NiUpIHNrZXdYKDNkZWcpfQoudmFsYW5jZXtwb3NpdGlvbjphYnNvbHV0ZTt0b3A6MDtsZWZ0OjA7cmlnaHQ6MDtoZWlnaHQ6NjRweDt6LWluZGV4OjY7YmFja2dyb3VuZDpsaW5lYXItZ3JhZGllbnQodmFyKC0tcmVkMiksdmFyKC0tcmVkKSk7Ym9yZGVyLWJvdHRvbTo2cHggc29saWQgdmFyKC0tZ29sZCk7CiAgLXdlYmtpdC1tYXNrOnJhZGlhbC1ncmFkaWVudChjaXJjbGUgYXQgNTAlIDEwMCUsdHJhbnNwYXJlbnQgMCwjMDAwIDFweCkgO2JvcmRlci1yYWRpdXM6MCAwIDUwJSA1MCUvMCAwIDMwcHggMzBweDtib3gtc2hhZG93OjAgOHB4IDIwcHggcmdiYSgwLDAsMCwuNSl9CiNjb3VudHtwb3NpdGlvbjphYnNvbHV0ZTt6LWluZGV4Ojc7bGVmdDo1MCU7dG9wOjUwJTt0cmFuc2Zvcm06dHJhbnNsYXRlKC01MCUsLTUwJSk7Zm9udDo4MDAgMTIwcHggUG9wcGlucztjb2xvcjp2YXIoLS1nb2xkKTt0ZXh0LXNoYWRvdzowIDAgMzBweCByZ2JhKDI1NSwyMTAsMTIyLC44KX0KI2NvdW50LnBvcHthbmltYXRpb246cG9wIC45c30KQGtleWZyYW1lcyBwb3B7MCV7dHJhbnNmb3JtOnRyYW5zbGF0ZSgtNTAlLC01MCUpIHNjYWxlKDIuMik7b3BhY2l0eTowfTMwJXtvcGFjaXR5OjE7dHJhbnNmb3JtOnRyYW5zbGF0ZSgtNTAlLC01MCUpIHNjYWxlKDEpfTEwMCV7b3BhY2l0eTowO3RyYW5zZm9ybTp0cmFuc2xhdGUoLTUwJSwtNTAlKSBzY2FsZSguNil9fQoKLyogLS0tLS0tLS0tLSAzLiBDQUtFIC0tLS0tLS0tLS0gKi8KLmNha2V7cG9zaXRpb246cmVsYXRpdmU7d2lkdGg6MjMwcHg7aGVpZ2h0OjIwMHB4O21hcmdpbjo1MHB4IGF1dG8gMTBweH0KLnBsYXRle3Bvc2l0aW9uOmFic29sdXRlO2JvdHRvbTowO2xlZnQ6LTIwcHg7cmlnaHQ6LTIwcHg7aGVpZ2h0OjE2cHg7Ym9yZGVyLXJhZGl1czo1MCU7YmFja2dyb3VuZDojZThlMGYwO2JveC1zaGFkb3c6MCA2cHggMCAjYjlhZWM5fQoudGllcntwb3NpdGlvbjphYnNvbHV0ZTtsZWZ0OjUwJTt0cmFuc2Zvcm06dHJhbnNsYXRlWCgtNTAlKTtib3JkZXItcmFkaXVzOjE0cHggMTRweCAxMHB4IDEwcHh9Ci50MXtib3R0b206MTBweDt3aWR0aDoyMzBweDtoZWlnaHQ6ODBweDtiYWNrZ3JvdW5kOmxpbmVhci1ncmFkaWVudCgjZmY4ZmI4LCNlMDQ1N2YpfQoudDJ7Ym90dG9tOjg2cHg7d2lkdGg6MTcwcHg7aGVpZ2h0OjY2cHg7YmFja2dyb3VuZDpsaW5lYXItZ3JhZGllbnQoI2ZmZjFkNiwjZjJjOThmKX0KLmRyaXB7cG9zaXRpb246YWJzb2x1dGU7dG9wOjA7bGVmdDowO3JpZ2h0OjA7aGVpZ2h0OjIycHg7Ym9yZGVyLXJhZGl1czoxNHB4IDE0cHggMCAwO2JhY2tncm91bmQ6cmFkaWFsLWdyYWRpZW50KGNpcmNsZSBhdCAxMHB4IDE4cHgsdHJhbnNwYXJlbnQgMCx0cmFuc3BhcmVudCAwKSAsI2ZmZjsKICAtd2Via2l0LW1hc2s6cmFkaWFsLWdyYWRpZW50KGNpcmNsZSAxMXB4IGF0IDUwJSAxMDAlLCMwMDAgOTglLHRyYW5zcGFyZW50KSAwIDAvMjJweCAzMHB4IHJlcGVhdC14LCBsaW5lYXItZ3JhZGllbnQoIzAwMCwjMDAwKSAwIDAvMTAwJSAxMnB4IG5vLXJlcGVhdH0KLnQxIC5kcmlwe2JhY2tncm91bmQ6I2ZmZjZmYn0udDIgLmRyaXB7YmFja2dyb3VuZDojZmY1YzlhfQouc3ByaW5rbGV7cG9zaXRpb246YWJzb2x1dGU7d2lkdGg6NHB4O2hlaWdodDoxMHB4O2JvcmRlci1yYWRpdXM6M3B4fQouY2FuZGxlc3twb3NpdGlvbjphYnNvbHV0ZTtib3R0b206MTUycHg7bGVmdDo1MCU7dHJhbnNmb3JtOnRyYW5zbGF0ZVgoLTUwJSk7ZGlzcGxheTpmbGV4O2dhcDoxOHB4fQouY2FuZGxle3Bvc2l0aW9uOnJlbGF0aXZlO3dpZHRoOjEycHg7aGVpZ2h0OjQ0cHg7Ym9yZGVyLXJhZGl1czozcHg7YmFja2dyb3VuZDpyZXBlYXRpbmctbGluZWFyLWdyYWRpZW50KDQ1ZGVnLCNmZmYgMCA2cHgsIzdjYzRmZiA2cHggMTJweCk7Y3Vyc29yOnBvaW50ZXJ9Ci5mbGFtZXtwb3NpdGlvbjphYnNvbHV0ZTtsZWZ0OjUwJTt0b3A6LTMwcHg7d2lkdGg6MTZweDtoZWlnaHQ6MjZweDttYXJnaW4tbGVmdDotOHB4O2JvcmRlci1yYWRpdXM6NTAlIDUwJSA1MCUgNTAlLzYwJSA2MCUgNDAlIDQwJTsKICBiYWNrZ3JvdW5kOnJhZGlhbC1ncmFkaWVudChjaXJjbGUgYXQgNTAlIDcwJSwjZmZmIDEwJSwjZmZkNzVlIDM1JSwjZmY3YjFjIDc1JSk7Ym94LXNoYWRvdzowIDAgMjJweCA2cHggcmdiYSgyNTUsMTcwLDYwLC42KTthbmltYXRpb246ZmxpY2sgLjEycyBpbmZpbml0ZSBhbHRlcm5hdGU7dHJhbnNmb3JtLW9yaWdpbjo1MCUgMTAwJX0KQGtleWZyYW1lcyBmbGlja3t0b3t0cmFuc2Zvcm06c2NhbGVZKDEuMSkgcm90YXRlKDJkZWcpfX0KLmNhbmRsZS5vdXQgLmZsYW1le2FuaW1hdGlvbjpub25lO29wYWNpdHk6MDt0cmFuc2Zvcm06c2NhbGUoLjIpO3RyYW5zaXRpb246LjNzfQouc21va2V7cG9zaXRpb246YWJzb2x1dGU7bGVmdDo1MCU7dG9wOi0yMHB4O3dpZHRoOjhweDtoZWlnaHQ6OHB4O21hcmdpbi1sZWZ0Oi00cHg7Ym9yZGVyLXJhZGl1czo1MCU7YmFja2dyb3VuZDpyZ2JhKDIyMCwyMjAsMjIwLC43KTtvcGFjaXR5OjB9Ci5jYW5kbGUub3V0IC5zbW9rZXthbmltYXRpb246c21va2UgMS42cyBmb3J3YXJkc30KQGtleWZyYW1lcyBzbW9rZXswJXtvcGFjaXR5Oi44fTEwMCV7b3BhY2l0eTowO3RyYW5zZm9ybTp0cmFuc2xhdGVZKC02MHB4KSBzY2FsZSg0KX19CgovKiAtLS0tLS0tLS0tIDQuIFBPTEFST0lEUyAtLS0tLS0tLS0tICovCi5ib2FyZHtwb3NpdGlvbjpyZWxhdGl2ZTt3aWR0aDptaW4oMzgwcHgsOTR2dyk7aGVpZ2h0Om1pbig0NzBweCw2MnZoKTttYXJnaW4tdG9wOjE2cHh9Ci5wb2x7cG9zaXRpb246YWJzb2x1dGU7d2lkdGg6NDQlO2JhY2tncm91bmQ6I2ZmZjtwYWRkaW5nOjhweCA4cHggMzRweDtib3JkZXItcmFkaXVzOjRweDtib3gtc2hhZG93OjAgMTBweCAyNnB4IHJnYmEoMCwwLDAsLjQ1KTtjdXJzb3I6cG9pbnRlcjt0cmFuc2l0aW9uOnRyYW5zZm9ybSAuNXMgY3ViaWMtYmV6aWVyKC4yLDEuNCwuNCwxKSxvcGFjaXR5IC41cztvcGFjaXR5OjB9Ci5wb2wuaW57b3BhY2l0eToxfQoucG9sIC5waHthc3BlY3QtcmF0aW86MTtib3JkZXItcmFkaXVzOjJweDtkaXNwbGF5OmZsZXg7YWxpZ24taXRlbXM6Y2VudGVyO2p1c3RpZnktY29udGVudDpjZW50ZXI7Zm9udC1zaXplOjQ0cHg7YmFja2dyb3VuZC1zaXplOmNvdmVyO2JhY2tncm91bmQtcG9zaXRpb246Y2VudGVyfQoucG9sIHB7cG9zaXRpb246YWJzb2x1dGU7Ym90dG9tOjZweDtsZWZ0OjA7cmlnaHQ6MDtmb250OjcwMCAxN3B4IENhdmVhdDtjb2xvcjojMzMzfQoucG9sOjpiZWZvcmV7Y29udGVudDoiIjtwb3NpdGlvbjphYnNvbHV0ZTt0b3A6LTEwcHg7bGVmdDo1MCU7d2lkdGg6NjBweDtoZWlnaHQ6MjBweDttYXJnaW4tbGVmdDotMzBweDtiYWNrZ3JvdW5kOnJnYmEoMjU1LDIyMCwyMzAsLjc1KTt0cmFuc2Zvcm06cm90YXRlKC00ZGVnKX0KI3pvb217cG9zaXRpb246Zml4ZWQ7aW5zZXQ6MDt6LWluZGV4OjQ1O2JhY2tncm91bmQ6cmdiYSgxMCwwLDIwLC44Mik7ZGlzcGxheTpub25lO2FsaWduLWl0ZW1zOmNlbnRlcjtqdXN0aWZ5LWNvbnRlbnQ6Y2VudGVyO2ZsZXgtZGlyZWN0aW9uOmNvbHVtbn0KI3pvb20ub257ZGlzcGxheTpmbGV4O2FuaW1hdGlvbjpmYWRlIC4zc30KQGtleWZyYW1lcyBmYWRle2Zyb217b3BhY2l0eTowfX0KI3pvb20gLnBvbHtwb3NpdGlvbjpyZWxhdGl2ZTt3aWR0aDptaW4oMzAwcHgsODB2dyk7b3BhY2l0eToxO3RyYW5zZm9ybTpyb3RhdGUoLTJkZWcpfQoKLyogLS0tLS0tLS0tLSA1LiBSRUFTT05TIC0tLS0tLS0tLS0gKi8KLmRlY2t7cG9zaXRpb246cmVsYXRpdmU7d2lkdGg6bWluKDMwMHB4LDgydncpO2hlaWdodDozNjBweDttYXJnaW4tdG9wOjIycHh9Ci5jYXJke3Bvc2l0aW9uOmFic29sdXRlO2luc2V0OjA7Ym9yZGVyLXJhZGl1czoyMnB4O3BhZGRpbmc6MzBweCAyNHB4O2Rpc3BsYXk6ZmxleDtmbGV4LWRpcmVjdGlvbjpjb2x1bW47anVzdGlmeS1jb250ZW50OmNlbnRlcjthbGlnbi1pdGVtczpjZW50ZXI7Y3Vyc29yOnBvaW50ZXI7CiAgY29sb3I6IzRhMTAzMDtiYWNrZ3JvdW5kOmxpbmVhci1ncmFkaWVudCgxNjBkZWcsI2ZmZiwjZmZlMWVlKTtib3gtc2hhZG93OjAgMTZweCAzNnB4IHJnYmEoMCwwLDAsLjQpO3RyYW5zaXRpb246dHJhbnNmb3JtIC42cyBjdWJpYy1iZXppZXIoLjUsMCwuMiwxKSxvcGFjaXR5IC42c30KLmNhcmQgLm51bXtmb250OjgwMCAxM3B4IFBvcHBpbnM7bGV0dGVyLXNwYWNpbmc6M3B4O2NvbG9yOnZhcigtLXBpbmspO21hcmdpbi1ib3R0b206MTJweH0KLmNhcmQgLmVte2ZvbnQtc2l6ZTo1MnB4O21hcmdpbi1ib3R0b206MTRweH0KLmNhcmQgLnR4e2ZvbnQ6NzAwIDI1cHggQ2F2ZWF0O2xpbmUtaGVpZ2h0OjEuMjV9Ci5jYXJkLmdvbmV7dHJhbnNmb3JtOnRyYW5zbGF0ZVgoMTMwJSkgcm90YXRlKDI1ZGVnKSFpbXBvcnRhbnQ7b3BhY2l0eTowfQoKLyogLS0tLS0tLS0tLSA2LiBMRVRURVIgLS0tLS0tLS0tLSAqLwouZW52e3Bvc2l0aW9uOnJlbGF0aXZlO3dpZHRoOjMwMHB4O2hlaWdodDoxOTBweDttYXJnaW4tdG9wOjE1MHB4O2N1cnNvcjpwb2ludGVyfQouZW52IC5iYWNre3Bvc2l0aW9uOmFic29sdXRlO2luc2V0OjA7YmFja2dyb3VuZDojZTI1NzdmO2JvcmRlci1yYWRpdXM6NnB4fQouZW52IC5wYXBlcntwb3NpdGlvbjphYnNvbHV0ZTtsZWZ0OjE0cHg7cmlnaHQ6MTRweDt0b3A6MTBweDtoZWlnaHQ6MTcwcHg7YmFja2dyb3VuZDp2YXIoLS1jcmVhbSk7Ym9yZGVyLXJhZGl1czo2cHg7dHJhbnNpdGlvbjp0cmFuc2Zvcm0gMXMgLjVzLGhlaWdodCAxcyAuNXM7ei1pbmRleDoxOwogIGNvbG9yOiM0YTEwMzA7Zm9udDo2MDAgMjBweC8xLjM1IENhdmVhdDt0ZXh0LWFsaWduOmxlZnQ7cGFkZGluZzoxOHB4O292ZXJmbG93OmhpZGRlbn0KLmVudiAuZnJvbnR7cG9zaXRpb246YWJzb2x1dGU7aW5zZXQ6MDt6LWluZGV4OjI7YmFja2dyb3VuZDpsaW5lYXItZ3JhZGllbnQoMTM1ZGVnLCNmZjdmYTYgNTAlLHRyYW5zcGFyZW50IDUwJSkgbGVmdC81MC41JSAxMDAlIG5vLXJlcGVhdCxsaW5lYXItZ3JhZGllbnQoMjI1ZGVnLCNmZjdmYTYgNTAlLHRyYW5zcGFyZW50IDUwJSkgcmlnaHQvNTAuNSUgMTAwJSBuby1yZXBlYXQsbGluZWFyLWdyYWRpZW50KDBkZWcsI2Y0NmE5MyA1MCUsdHJhbnNwYXJlbnQgNTAlKTtib3JkZXItcmFkaXVzOjZweDtwb2ludGVyLWV2ZW50czpub25lfQouZW52IC5mbGFwe3Bvc2l0aW9uOmFic29sdXRlO3RvcDowO2xlZnQ6MDtyaWdodDowO2hlaWdodDoxMTBweDt6LWluZGV4OjM7YmFja2dyb3VuZDojZmY5NmI2O2NsaXAtcGF0aDpwb2x5Z29uKDAgMCwxMDAlIDAsNTAlIDEwMCUpO3RyYW5zZm9ybS1vcmlnaW46dG9wO3RyYW5zaXRpb246dHJhbnNmb3JtIC42cyx6LWluZGV4IDBzIC4zc30KLmVudiAuc2VhbHtwb3NpdGlvbjphYnNvbHV0ZTt6LWluZGV4OjQ7bGVmdDo1MCU7dG9wOjg0cHg7bWFyZ2luLWxlZnQ6LTIycHg7d2lkdGg6NDRweDtoZWlnaHQ6NDRweDtib3JkZXItcmFkaXVzOjUwJTtiYWNrZ3JvdW5kOnZhcigtLXJlZCk7ZGlzcGxheTpmbGV4O2FsaWduLWl0ZW1zOmNlbnRlcjtqdXN0aWZ5LWNvbnRlbnQ6Y2VudGVyO2ZvbnQtc2l6ZToyMHB4O2JveC1zaGFkb3c6MCAzcHggOHB4IHJnYmEoMCwwLDAsLjMpO3RyYW5zaXRpb246LjRzfQouZW52Lm9wZW4gLmZsYXB7dHJhbnNmb3JtOnJvdGF0ZVgoMTgwZGVnKTt6LWluZGV4OjB9Ci5lbnYub3BlbiAuc2VhbHtvcGFjaXR5OjA7dHJhbnNmb3JtOnNjYWxlKDApfQouZW52Lm9wZW4gLnBhcGVye3RyYW5zZm9ybTp0cmFuc2xhdGVZKC0yMzBweCk7aGVpZ2h0OjM4MHB4O3otaW5kZXg6NTtvdmVyZmxvdzphdXRvfQouZW52Lm9wZW4gLmZyb250e3otaW5kZXg6Mn0KLmNhcmV0OjphZnRlcntjb250ZW50OiJ8IjthbmltYXRpb246YmwgMXMgaW5maW5pdGV9CkBrZXlmcmFtZXMgYmx7NTAle29wYWNpdHk6MH19CgovKiAtLS0tLS0tLS0tIDcuIEdJRlQgLS0tLS0tLS0tLSAqLwouZ2lmdHtwb3NpdGlvbjpyZWxhdGl2ZTt3aWR0aDoxNzBweDtoZWlnaHQ6MTcwcHg7bWFyZ2luLXRvcDo3MHB4O2N1cnNvcjpwb2ludGVyO2FuaW1hdGlvbjp3aWdnbGUgMS42cyBpbmZpbml0ZX0KQGtleWZyYW1lcyB3aWdnbGV7MCUsODAlLDEwMCV7dHJhbnNmb3JtOnJvdGF0ZSgwKX04NSV7dHJhbnNmb3JtOnJvdGF0ZSgtNmRlZyl9OTAle3RyYW5zZm9ybTpyb3RhdGUoNmRlZyl9OTUle3RyYW5zZm9ybTpyb3RhdGUoLTNkZWcpfX0KLmdpZnQgLmJveHtwb3NpdGlvbjphYnNvbHV0ZTtib3R0b206MDtsZWZ0OjEwcHg7cmlnaHQ6MTBweDtoZWlnaHQ6MTIwcHg7YmFja2dyb3VuZDpsaW5lYXItZ3JhZGllbnQoOTBkZWcsdHJhbnNwYXJlbnQgNDIlLHZhcigtLWdvbGQpIDQyJSA1OCUsdHJhbnNwYXJlbnQgNTglKSxsaW5lYXItZ3JhZGllbnQoI2ZmNWM5YSwjZDYzYTc2KTtib3JkZXItcmFkaXVzOjZweH0KLmdpZnQgLmxpZHtwb3NpdGlvbjphYnNvbHV0ZTt0b3A6MjhweDtsZWZ0OjA7cmlnaHQ6MDtoZWlnaHQ6MzZweDtiYWNrZ3JvdW5kOmxpbmVhci1ncmFkaWVudCg5MGRlZyx0cmFuc3BhcmVudCA0MiUsdmFyKC0tZ29sZCkgNDIlIDU4JSx0cmFuc3BhcmVudCA1OCUpLCNmZjdmYWU7Ym9yZGVyLXJhZGl1czo2cHg7dHJhbnNpdGlvbjp0cmFuc2Zvcm0gMXMgY3ViaWMtYmV6aWVyKC4zLDEuNiwuNSwxKX0KLmdpZnQgLmJvd3twb3NpdGlvbjphYnNvbHV0ZTt0b3A6LTE0cHg7bGVmdDo1MCU7dHJhbnNmb3JtOnRyYW5zbGF0ZVgoLTUwJSk7Zm9udC1zaXplOjQ4cHh9Ci5naWZ0Lm9wZW5lZHthbmltYXRpb246bm9uZX0KLmdpZnQub3BlbmVkIC5saWR7dHJhbnNmb3JtOnRyYW5zbGF0ZVkoLTIwMHB4KSByb3RhdGUoLTM1ZGVnKSB0cmFuc2xhdGVYKC02MHB4KTtvcGFjaXR5OjA7dHJhbnNpdGlvbjp0cmFuc2Zvcm0gMXMsb3BhY2l0eSAxcyAuNnN9CiNmaW5hbHtvcGFjaXR5OjA7dHJhbnNmb3JtOnRyYW5zbGF0ZVkoMjBweCk7dHJhbnNpdGlvbjoxLjJzO21heC13aWR0aDo0MjBweH0KI2ZpbmFsLnNob3d7b3BhY2l0eToxO3RyYW5zZm9ybTpub25lfQojZmluYWwgaDF7Zm9udC1zaXplOmNsYW1wKDM0cHgsMTB2dyw1OHB4KTtjb2xvcjp2YXIoLS1nb2xkKX0KI2ZpbmFsIHB7Zm9udDo3MDAgMjRweC8xLjM1IENhdmVhdDttYXJnaW4tdG9wOjE0cHg7Y29sb3I6dmFyKC0tcGluazIpfQouZmxvYXQtaGVhcnR7cG9zaXRpb246Zml4ZWQ7Ym90dG9tOi00MHB4O3otaW5kZXg6MTtwb2ludGVyLWV2ZW50czpub25lO2FuaW1hdGlvbjp1cCBsaW5lYXIgZm9yd2FyZHN9CkBrZXlmcmFtZXMgdXB7dG97dHJhbnNmb3JtOnRyYW5zbGF0ZVkoLTExNXZoKSByb3RhdGUoMzBkZWcpO29wYWNpdHk6MH19Cjwvc3R5bGU+CjwvaGVhZD4KPGJvZHk+CjxkaXYgY2xhc3M9InN0YXJzIiBpZD0ic3RhcnMiPjwvZGl2Pgo8Y2FudmFzIGlkPSJmeCI+PC9jYW52YXM+CjxkaXYgaWQ9InByb2ciPjwvZGl2Pgo8YnV0dG9uIGlkPSJtdXNpYyIgdGl0bGU9Im11c2ljIj7wn5SKPC9idXR0b24+Cgo8IS0tIDAgTE9DSyAtLT4KPHNlY3Rpb24gY2xhc3M9InNjZW5lIG9uIiBpZD0iczAiPgogIDxkaXYgY2xhc3M9ImxvY2tjYXJkIiBpZD0ibG9ja2NhcmQiPgogICAgPGRpdiBjbGFzcz0ibG9ja2ljb24iPvCflJA8L2Rpdj4KICAgIDxoMSBjbGFzcz0ic2NyaXB0IiBzdHlsZT0iZm9udC1zaXplOjI2cHg7bWFyZ2luLXRvcDo2cHgiPkVudGVyIHRoZSBwYXNzY29kZTwvaDE+CiAgICA8ZGl2IGNsYXNzPSJkb3RzIiBpZD0iZG90cyI+PC9kaXY+CiAgICA8ZGl2IGNsYXNzPSJoaW50IiBpZD0iaGludCI+PC9kaXY+CiAgICA8ZGl2IGNsYXNzPSJwYWQiIGlkPSJwYWQiPjwvZGl2PgogIDwvZGl2Pgo8L3NlY3Rpb24+Cgo8IS0tIDEgQVNLIC0tPgo8c2VjdGlvbiBjbGFzcz0ic2NlbmUiIGlkPSJzMSI+CiAgPGRpdiBjbGFzcz0iYmVhciIgaWQ9ImFza0Vtb2ppIj7wn6e4PC9kaXY+CiAgPGgxIGNsYXNzPSJzY3JpcHQiIHN0eWxlPSJmb250LXNpemU6Y2xhbXAoMjhweCw4dncsNDRweCk7bWFyZ2luLXRvcDoxNHB4IiBpZD0iYXNrVGl0bGUiPjwvaDE+CiAgPHAgY2xhc3M9InN1YiIgaWQ9ImFza0xpbmUiPkkgbWFkZSBzb21ldGhpbmcgc3BlY2lhbCBmb3IgeW914oCmIHdhbm5hIHNlZT8g8J+lujwvcD4KICA8ZGl2IGlkPSJhc2tUeHQiPjwvZGl2PgogIDxkaXYgY2xhc3M9ImFzay1yb3ciPjxidXR0b24gY2xhc3M9ImJ0biIgaWQ9Inllc0J0biI+WWVzIPCfkpY8L2J1dHRvbj48YnV0dG9uIGNsYXNzPSJidG4gZ2hvc3QiIGlkPSJub0J0biI+Tm88L2J1dHRvbj48L2Rpdj4KPC9zZWN0aW9uPgoKPCEtLSAyIENVUlRBSU4gLS0+CjxzZWN0aW9uIGNsYXNzPSJzY2VuZSIgaWQ9InMyIj4KICA8ZGl2IGNsYXNzPSJzdGFnZS1iZyI+PC9kaXY+PGRpdiBjbGFzcz0ic3BvdCI+PC9kaXY+CiAgPGRpdiBjbGFzcz0icmV2ZWFsIj4KICAgIDxoMSBjbGFzcz0ic2NyaXB0IiBpZD0iYmRIZWFkIj5IYXBweSBCaXJ0aGRheTwvaDE+CiAgICA8ZGl2IGNsYXNzPSJuYW1lIiBpZD0iYmROYW1lIj48L2Rpdj4KICAgIDxkaXYgY2xhc3M9ImFnZSIgaWQ9ImJkQWdlIj48L2Rpdj48YnI+CiAgICA8YnV0dG9uIGNsYXNzPSJidG4gbmV4dCIgaWQ9Im4yIj5Zb3VyIGNha2UgaXMgcmVhZHkg8J+OgjwvYnV0dG9uPgogIDwvZGl2PgogIDxkaXYgY2xhc3M9ImN1cnRhaW4gbCI+PC9kaXY+PGRpdiBjbGFzcz0iY3VydGFpbiByIj48L2Rpdj48ZGl2IGNsYXNzPSJ2YWxhbmNlIj48L2Rpdj4KICA8ZGl2IGlkPSJjb3VudCI+PC9kaXY+Cjwvc2VjdGlvbj4KCjwhLS0gMyBDQUtFIC0tPgo8c2VjdGlvbiBjbGFzcz0ic2NlbmUiIGlkPSJzMyI+CiAgPGgxIGNsYXNzPSJzY3JpcHQiIHN0eWxlPSJmb250LXNpemU6MzRweCIgaWQ9ImNha2VUaXRsZSI+QmxvdyB0aGUgY2FuZGxlcyE8L2gxPgogIDxwIGNsYXNzPSJzdWIiIGlkPSJjYWtlU3ViIj5UYXAgZWFjaCBmbGFtZSDwn5Wv77iPPC9wPgogIDxkaXYgY2xhc3M9ImNha2UiIGlkPSJjYWtlIj4KICAgIDxkaXYgY2xhc3M9ImNhbmRsZXMiIGlkPSJjYW5kbGVzIj48L2Rpdj4KICAgIDxkaXYgY2xhc3M9InRpZXIgdDIiPjxkaXYgY2xhc3M9ImRyaXAiPjwvZGl2PjwvZGl2PgogICAgPGRpdiBjbGFzcz0idGllciB0MSI+PGRpdiBjbGFzcz0iZHJpcCI+PC9kaXY+PC9kaXY+CiAgICA8ZGl2IGNsYXNzPSJwbGF0ZSI+PC9kaXY+CiAgPC9kaXY+CiAgPGJ1dHRvbiBjbGFzcz0iYnRuIG5leHQiIGlkPSJuMyI+U29tZSBtZW1vcmllcyDwn5O4PC9idXR0b24+Cjwvc2VjdGlvbj4KCjwhLS0gNCBNRU1PUklFUyAtLT4KPHNlY3Rpb24gY2xhc3M9InNjZW5lIiBpZD0iczQiPgogIDxoMSBjbGFzcz0ic2NyaXB0IiBzdHlsZT0iZm9udC1zaXplOjMycHgiPk91ciBsaXR0bGUgbWVtb3JpZXM8L2gxPgogIDxwIGNsYXNzPSJzdWIiPnRhcCBhIHBob3RvIOKcqDwvcD4KICA8ZGl2IGNsYXNzPSJib2FyZCIgaWQ9ImJvYXJkIj48L2Rpdj4KICA8YnV0dG9uIGNsYXNzPSJidG4gbmV4dCIgaWQ9Im40IiBzdHlsZT0ibWFyZ2luLXRvcDo4cHgiPldoeSB5b3UncmUgc3BlY2lhbCDwn5KMPC9idXR0b24+Cjwvc2VjdGlvbj4KPGRpdiBpZD0iem9vbSI+PC9kaXY+Cgo8IS0tIDUgUkVBU09OUyAtLT4KPHNlY3Rpb24gY2xhc3M9InNjZW5lIiBpZD0iczUiPgogIDxoMSBjbGFzcz0ic2NyaXB0IiBzdHlsZT0iZm9udC1zaXplOjMwcHgiIGlkPSJyVGl0bGUiPlJlYXNvbnMgeW91J3JlIGFtYXppbmc8L2gxPgogIDxwIGNsYXNzPSJzdWIiIGlkPSJyc3ViIj50YXAgdGhlIGNhcmQ8L3A+CiAgPGRpdiBjbGFzcz0iZGVjayIgaWQ9ImRlY2siPjwvZGl2PgogIDxidXR0b24gY2xhc3M9ImJ0biBuZXh0IiBpZD0ibjUiPlRoZXJlJ3MgYSBsZXR0ZXIgZm9yIHlvdSDinInvuI88L2J1dHRvbj4KPC9zZWN0aW9uPgoKPCEtLSA2IExFVFRFUiAtLT4KPHNlY3Rpb24gY2xhc3M9InNjZW5lIiBpZD0iczYiPgogIDxoMSBjbGFzcz0ic2NyaXB0IiBzdHlsZT0iZm9udC1zaXplOjMwcHgiIGlkPSJsZXRUaXRsZSI+WW91J3ZlIGdvdCBtYWlsIPCfkow8L2gxPgogIDxwIGNsYXNzPSJzdWIiIGlkPSJsZXRTdWIiPnRhcCB0byBvcGVuPC9wPgogIDxkaXYgY2xhc3M9ImVudiIgaWQ9ImVudiI+CiAgICA8ZGl2IGNsYXNzPSJiYWNrIj48L2Rpdj48ZGl2IGNsYXNzPSJwYXBlciIgaWQ9InBhcGVyIj48L2Rpdj4KICAgIDxkaXYgY2xhc3M9ImZyb250Ij48L2Rpdj48ZGl2IGNsYXNzPSJmbGFwIj48L2Rpdj48ZGl2IGNsYXNzPSJzZWFsIj7wn5KXPC9kaXY+CiAgPC9kaXY+CiAgPGJ1dHRvbiBjbGFzcz0iYnRuIG5leHQiIGlkPSJuNiIgc3R5bGU9InBvc2l0aW9uOnJlbGF0aXZlO3otaW5kZXg6OSI+T25lIGxhc3QgdGhpbmfigKYg8J+OgTwvYnV0dG9uPgo8L3NlY3Rpb24+Cgo8IS0tIDcgR0lGVCAtLT4KPHNlY3Rpb24gY2xhc3M9InNjZW5lIiBpZD0iczciPgogIDxoMSBjbGFzcz0ic2NyaXB0IiBzdHlsZT0iZm9udC1zaXplOjMwcHgiIGlkPSJnaWZ0VGl0bGUiPk9wZW4geW91ciBnaWZ0ITwvaDE+CiAgPGRpdiBjbGFzcz0iZ2lmdCIgaWQ9ImdpZnQiPjxkaXYgY2xhc3M9ImJveCI+PC9kaXY+PGRpdiBjbGFzcz0ibGlkIj48ZGl2IGNsYXNzPSJib3ciPvCfjoA8L2Rpdj48L2Rpdj48L2Rpdj4KICA8ZGl2IGlkPSJmaW5hbCI+CiAgICA8aDEgY2xhc3M9InNjcmlwdCIgaWQ9ImZpbmFsVGl0bGUiPjwvaDE+CiAgICA8cCBpZD0iZmluYWxNc2ciPjwvcD4KICAgIDxidXR0b24gY2xhc3M9ImJ0biBnaG9zdCIgc3R5bGU9Im1hcmdpbi10b3A6MjRweCIgb25jbGljaz0ibG9jYXRpb24ucmVsb2FkKCkiPlJlcGxheSDihro8L2J1dHRvbj4KICA8L2Rpdj4KPC9zZWN0aW9uPgoKPHNjcmlwdD4KLyogPT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09CiAgIOKcj++4jyAgQ09ORklHIOKAlCBjaGFuZ2Ugb25seSB0aGlzIHBhcnQgZm9yIGV2ZXJ5IG5ldyBjdXN0b21lcgogICA9PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0gKi8KY29uc3QgQ09ORklHID0gd2luZG93Ll9fQ0ZHX18gfHwgewogIG5hbWU6ICJBeWVzaGEiLAogIGZyb206ICJBbGkiLAogIGFnZTogIjIxIiwgICAgICAgICAgICAgICAgICAgICAgICAvLyBzaG93cyAiVFVSTklORyAyMSIg4oCTIGxlYXZlICIiIHRvIGhpZGUKICBwYXNzY29kZTogIjE0MTEiLCAgICAgICAgICAgICAgICAgLy8gNCBkaWdpdHMsIGUuZy4gYmlydGhkYXkgRERNTQogIGhpbnQ6ICJIaW50OiB5b3VyIGJpcnRoZGF5IChERE1NKSDwn46CIiwKICBjYW5kbGVzOiA1LAogIC8vIFBob3RvczogcHV0IGltYWdlIGxpbmtzIC8gZmlsZSBuYW1lcyBpbiAiaW1nIiAoZS5nLiAicGhvdG8xLmpwZyIpLiBFbXB0eSA9IGN1dGUgZW1vamkgcGxhY2Vob2xkZXIKICBwaG90b3M6IFsKICAgIHsgaW1nOiIiLCBlbW9qaToi8J+lsyIsIGNhcHRpb246ImZpcnN0IG1lZXQg4p2k77iPIiB9LAogICAgeyBpbWc6IiIsIGVtb2ppOiLwn42VIiwgY2FwdGlvbjoicGl6emEgbmlnaHRzIiB9LAogICAgeyBpbWc6IiIsIGVtb2ppOiLwn4+W77iPIiwgY2FwdGlvbjoidGhhdCB0cmlwISEiIH0sCiAgICB7IGltZzoiIiwgZW1vamk6IvCfk7giLCBjYXB0aW9uOiJzaWxseSB1cyDwn5iCIiB9LAogICAgeyBpbWc6IiIsIGVtb2ppOiLwn4yZIiwgY2FwdGlvbjoibGF0ZSBuaWdodCB0YWxrcyIgfSwKICAgIHsgaW1nOiIiLCBlbW9qaToi8J+OoSIsIGNhcHRpb246ImJlc3QgZGF5IGV2ZXIiIH0KICBdLAogIHJlYXNvbnM6IFsKICAgIHsgZW1vamk6IvCfmIoiLCB0ZXh0OiJZb3VyIHNtaWxlIGxpdGVyYWxseSBmaXhlcyBteSBiYWQgZGF5cyIgfSwKICAgIHsgZW1vamk6IvCfq7YiLCB0ZXh0OiJZb3UgY2FyZSBmb3IgZXZlcnlvbmUgbW9yZSB0aGFuIHlvdXJzZWxmIiB9LAogICAgeyBlbW9qaToi8J+YgiIsIHRleHQ6Ik5vYm9keSBtYWtlcyBtZSBsYXVnaCBsaWtlIHlvdSBkbyIgfSwKICAgIHsgZW1vamk6IvCfjJ8iLCB0ZXh0OiJZb3UgbWFrZSBvcmRpbmFyeSBkYXlzIGZlZWwgc3BlY2lhbCIgfSwKICAgIHsgZW1vamk6IvCfj6AiLCB0ZXh0OiJXaXRoIHlvdSBpdCBhbHdheXMgZmVlbHMgbGlrZSBob21lIiB9CiAgXSwKICBsZXR0ZXI6IGBEZWFyIEF5ZXNoYSxcblxuSGFwcHkgYmlydGhkYXkgdG8gdGhlIG1vc3QgYW1hemluZyBwZXJzb24gSSBrbm93ISDwn5KWXG5cblRoYW5rIHlvdSBmb3IgZXZlcnkgbGF1Z2gsIGV2ZXJ5IGxhdGUtbmlnaHQgdGFsayBhbmQgZXZlcnkgbW9tZW50IHlvdSBtYWRlIGJyaWdodGVyIGp1c3QgYnkgYmVpbmcgdGhlcmUuXG5cbkkgaG9wZSB0aGlzIHllYXIgZ2l2ZXMgeW91IGV2ZXJ5dGhpbmcgeW91IHdpc2ggZm9yIOKAlCBhbmQgbW9yZS5cblxuQWx3YXlzIHlvdXJzLFxuQWxpYCwKICBmaW5hbFRpdGxlOiAiSSBsb3ZlIHlvdSEg8J+SliIsCiAgZmluYWxNc2c6ICJIZXJlJ3MgdG8gYW5vdGhlciB5ZWFyIG9mIHlvdSBiZWluZyB3b25kZXJmdWwuIEhhcHB5IEJpcnRoZGF5ISDwn46C4pyoIiwKICBwbGF5TXVzaWM6IHRydWUsICAgICAgICAgICAgICAgICAgLy8gcGxheXMgSGFwcHkgQmlydGhkYXkgdHVuZSAobm8gZmlsZSBuZWVkZWQpCiAgdGhlbWU6ICJyb3NlIgp9Owpjb25zdCBUSEVNRVM9e3Jvc2U6WyIjMWEwYjJlIiwiIzNiMGYzZiIsIiNmZjVjOWEiLCIjZmZiM2QxIl0scm95YWw6WyIjMGQwYjJlIiwiIzJhMTQ2MCIsIiNhNzdiZmYiLCIjZDljN2ZmIl0sb2NlYW46WyIjMDQxNjJiIiwiIzBiM2E1YyIsIiMzM2MzZmYiLCIjYjNlY2ZmIl0sc3Vuc2V0OlsiIzJiMGQwYiIsIiM1YzFmMGIiLCIjZmY4YTNkIiwiI2ZmZDBhOCJdLG1pbnQ6WyIjMDYyMzFjIiwiIzBkNDYzNyIsIiMyZmUwYTUiLCIjYjZmN2RmIl19OwooZnVuY3Rpb24oKXtjb25zdCB0PVRIRU1FU1tDT05GSUcudGhlbWVdfHxUSEVNRVMucm9zZSxyPWRvY3VtZW50LmRvY3VtZW50RWxlbWVudC5zdHlsZTtbIi0tYmcxIiwiLS1iZzIiLCItLXBpbmsiLCItLXBpbmsyIl0uZm9yRWFjaCgodixpKT0+ci5zZXRQcm9wZXJ0eSh2LHRbaV0pKX0pKCk7CmNvbnN0IGVzYz1zPT5TdHJpbmcocz8/JycpLnJlcGxhY2UoL1smPD4iJ10vZyxjPT4oeycmJzonJmFtcDsnLCc8JzonJmx0OycsJz4nOicmZ3Q7JywnIic6JyZxdW90OycsIiciOicmIzM5Oyd9W2NdKSk7Ci8qID09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PSAqLwoKY29uc3QgJCA9IHMgPT4gZG9jdW1lbnQucXVlcnlTZWxlY3RvcihzKTsKY29uc3Qgc2xlZXAgPSBtcyA9PiBuZXcgUHJvbWlzZShyID0+IHNldFRpbWVvdXQociwgbXMpKTsKCi8qIHN0YXJzICovCmZvciAobGV0IGk9MDtpPDcwO2krKyl7Y29uc3Qgcz1kb2N1bWVudC5jcmVhdGVFbGVtZW50KCdpJyk7cy5zdHlsZS5sZWZ0PU1hdGgucmFuZG9tKCkqMTAwKyclJztzLnN0eWxlLnRvcD1NYXRoLnJhbmRvbSgpKjEwMCsnJSc7cy5zdHlsZS5hbmltYXRpb25EZWxheT1NYXRoLnJhbmRvbSgpKjMrJ3MnOyQoJyNzdGFycycpLmFwcGVuZENoaWxkKHMpfQoKLyogLS0tLS0tLS0tLSBGWDogY29uZmV0dGkgKyBmaXJld29ya3MgLS0tLS0tLS0tLSAqLwpjb25zdCBjdj0kKCcjZngnKSxjeD1jdi5nZXRDb250ZXh0KCcyZCcpO2xldCBQPVtdOwpmdW5jdGlvbiBycygpe2N2LndpZHRoPWlubmVyV2lkdGgqZGV2aWNlUGl4ZWxSYXRpbztjdi5oZWlnaHQ9aW5uZXJIZWlnaHQqZGV2aWNlUGl4ZWxSYXRpbztjeC5zZXRUcmFuc2Zvcm0oZGV2aWNlUGl4ZWxSYXRpbywwLDAsZGV2aWNlUGl4ZWxSYXRpbywwLDApfXJzKCk7YWRkRXZlbnRMaXN0ZW5lcigncmVzaXplJyxycyk7CmNvbnN0IENPTFM9WycjZmY1YzlhJywnI2ZmZDI3YScsJyM3Y2M0ZmYnLCcjYjM4Y2ZmJywnIzdkZmZiMCcsJyNmZmYnXTsKZnVuY3Rpb24gY29uZmV0dGkobj0xNDApe2ZvcihsZXQgaT0wO2k8bjtpKyspUC5wdXNoKHt4OmlubmVyV2lkdGgvMisoTWF0aC5yYW5kb20oKS0uNSkqaW5uZXJXaWR0aCouNix5Oi0yMC1NYXRoLnJhbmRvbSgpKmlubmVySGVpZ2h0Ki40LHZ4OihNYXRoLnJhbmRvbSgpLS41KSo0LHZ5Ok1hdGgucmFuZG9tKCkqMysyLHI6TWF0aC5yYW5kb20oKSo2KzQsYTpNYXRoLnJhbmRvbSgpKjYsdmE6KE1hdGgucmFuZG9tKCktLjUpKi4zLGM6Q09MU1tpJTZdLHQ6J2MnLGw6NDAwfSl9CmZ1bmN0aW9uIGJ1cnN0KHgseSxuPTcwKXtjb25zdCBjPUNPTFNbTWF0aC5yYW5kb20oKSo2fDBdO2ZvcihsZXQgaT0wO2k8bjtpKyspe2NvbnN0IGE9TWF0aC5QSSoyKmkvbixzPU1hdGgucmFuZG9tKCkqNCsyO1AucHVzaCh7eCx5LHZ4Ok1hdGguY29zKGEpKnMsdnk6TWF0aC5zaW4oYSkqcyxyOjIuMixjLHQ6J2YnLGw6NzArTWF0aC5yYW5kb20oKSozMH0pfX0KZnVuY3Rpb24gbG9vcCgpe2N4LmNsZWFyUmVjdCgwLDAsaW5uZXJXaWR0aCxpbm5lckhlaWdodCk7UD1QLmZpbHRlcihwPT5wLmwtLT4wJiZwLnk8aW5uZXJIZWlnaHQrNDApO2Zvcihjb25zdCBwIG9mIFApewogIGlmKHAudD09PSdjJyl7cC54Kz1wLnZ4K01hdGguc2luKHAuYSkqLjg7cC55Kz1wLnZ5O3AuYSs9cC52YTtjeC5zYXZlKCk7Y3gudHJhbnNsYXRlKHAueCxwLnkpO2N4LnJvdGF0ZShwLmEpO2N4LmZpbGxTdHlsZT1wLmM7Y3guZmlsbFJlY3QoLXAuci8yLC1wLnIvNCxwLnIscC5yLzIpO2N4LnJlc3RvcmUoKX0KICBlbHNle3AueCs9cC52eDtwLnkrPXAudnk7cC52eSs9LjA1O3AudngqPS45ODU7Y3guZ2xvYmFsQWxwaGE9TWF0aC5taW4oMSxwLmwvNDApO2N4LmZpbGxTdHlsZT1wLmM7Y3guYmVnaW5QYXRoKCk7Y3guYXJjKHAueCxwLnkscC5yLDAsNyk7Y3guZmlsbCgpO2N4Lmdsb2JhbEFscGhhPTF9fQogIHJlcXVlc3RBbmltYXRpb25GcmFtZShsb29wKX1sb29wKCk7CmZ1bmN0aW9uIGhlYXJ0cyhuPTE0KXtmb3IobGV0IGk9MDtpPG47aSsrKXtjb25zdCBoPWRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoJ2RpdicpO2guY2xhc3NOYW1lPSdmbG9hdC1oZWFydCc7aC50ZXh0Q29udGVudD1bJ/CfkpYnLCfwn5KVJywn8J+SlycsJ+KcqCcsJ/CfjognXVtpJTVdO2guc3R5bGUubGVmdD1NYXRoLnJhbmRvbSgpKjEwMCsndncnO2guc3R5bGUuZm9udFNpemU9KDE2K01hdGgucmFuZG9tKCkqMjIpKydweCc7aC5zdHlsZS5hbmltYXRpb25EdXJhdGlvbj0oNCtNYXRoLnJhbmRvbSgpKjQpKydzJztoLnN0eWxlLmFuaW1hdGlvbkRlbGF5PU1hdGgucmFuZG9tKCkqMisncyc7ZG9jdW1lbnQuYm9keS5hcHBlbmRDaGlsZChoKTtzZXRUaW1lb3V0KCgpPT5oLnJlbW92ZSgpLDkwMDApfX0KCi8qIC0tLS0tLS0tLS0gTVVTSUMgKHN5bnRoIEhhcHB5IEJpcnRoZGF5KSAtLS0tLS0tLS0tICovCmxldCBBQyxtdXNpY09uPWZhbHNlLG11c2ljVGltZXI7CmNvbnN0IE49e0c0OjM5MixBNDo0NDAsQjQ6NDk0LEM1OjUyMyxENTo1ODcsRTU6NjU5LEY1OjY5OCxHNTo3ODR9Owpjb25zdCBTT05HPVtbJ0c0JywuNzVdLFsnRzQnLC4yNV0sWydBNCcsMV0sWydHNCcsMV0sWydDNScsMV0sWydCNCcsMl0sWydHNCcsLjc1XSxbJ0c0JywuMjVdLFsnQTQnLDFdLFsnRzQnLDFdLFsnRDUnLDFdLFsnQzUnLDJdLFsnRzQnLC43NV0sWydHNCcsLjI1XSxbJ0c1JywxXSxbJ0U1JywxXSxbJ0M1JywxXSxbJ0I0JywxXSxbJ0E0JywyXSxbJ0Y1JywuNzVdLFsnRjUnLC4yNV0sWydFNScsMV0sWydDNScsMV0sWydENScsMV0sWydDNScsM11dOwpmdW5jdGlvbiBwbGF5U29uZygpe2lmKCFtdXNpY09uKXJldHVybjtsZXQgdD1BQy5jdXJyZW50VGltZSsuMTtjb25zdCBiZWF0PS40MjsKICBmb3IoY29uc3RbbixkXW9mIFNPTkcpe2Zvcihjb25zdCBbbXVsLGddIG9mIFtbMSwuMTZdLFsyLC4wNF1dKXtjb25zdCBvPUFDLmNyZWF0ZU9zY2lsbGF0b3IoKSx2PUFDLmNyZWF0ZUdhaW4oKTtvLnR5cGU9J3RyaWFuZ2xlJztvLmZyZXF1ZW5jeS52YWx1ZT1OW25dKm11bDt2LmdhaW4uc2V0VmFsdWVBdFRpbWUoMCx0KTt2LmdhaW4ubGluZWFyUmFtcFRvVmFsdWVBdFRpbWUoZyx0Ky4wMik7di5nYWluLmV4cG9uZW50aWFsUmFtcFRvVmFsdWVBdFRpbWUoLjAwMSx0K2QqYmVhdCouOTUpO28uY29ubmVjdCh2KS5jb25uZWN0KEFDLmRlc3RpbmF0aW9uKTtvLnN0YXJ0KHQpO28uc3RvcCh0K2QqYmVhdCl9dCs9ZCpiZWF0fQogIG11c2ljVGltZXI9c2V0VGltZW91dChwbGF5U29uZywodC1BQy5jdXJyZW50VGltZSsxLjUpKjEwMDApfQpmdW5jdGlvbiBzdGFydE11c2ljKCl7aWYoIUNPTkZJRy5wbGF5TXVzaWMpcmV0dXJuO3RyeXtBQz1BQ3x8bmV3ICh3aW5kb3cuQXVkaW9Db250ZXh0fHx3aW5kb3cud2Via2l0QXVkaW9Db250ZXh0KSgpO0FDLnJlc3VtZSgpO211c2ljT249dHJ1ZTskKCcjbXVzaWMnKS5zdHlsZS5kaXNwbGF5PSdibG9jayc7JCgnI211c2ljJykudGV4dENvbnRlbnQ9J/CflIonO3BsYXlTb25nKCl9Y2F0Y2goZSl7fX0KJCgnI211c2ljJykub25jbGljaz0oKT0+e211c2ljT249IW11c2ljT247JCgnI211c2ljJykudGV4dENvbnRlbnQ9bXVzaWNPbj8n8J+Uiic6J/CflIcnO2NsZWFyVGltZW91dChtdXNpY1RpbWVyKTtpZihtdXNpY09uKXBsYXlTb25nKCl9OwpmdW5jdGlvbiBibGlwKGY9ODgwLGQ9LjA4KXt0cnl7QUM9QUN8fG5ldyAod2luZG93LkF1ZGlvQ29udGV4dHx8d2luZG93LndlYmtpdEF1ZGlvQ29udGV4dCkoKTtjb25zdCBvPUFDLmNyZWF0ZU9zY2lsbGF0b3IoKSxnPUFDLmNyZWF0ZUdhaW4oKTtvLmZyZXF1ZW5jeS52YWx1ZT1mO2cuZ2Fpbi5zZXRWYWx1ZUF0VGltZSguMDgsQUMuY3VycmVudFRpbWUpO2cuZ2Fpbi5leHBvbmVudGlhbFJhbXBUb1ZhbHVlQXRUaW1lKC4wMDEsQUMuY3VycmVudFRpbWUrZCk7by5jb25uZWN0KGcpLmNvbm5lY3QoQUMuZGVzdGluYXRpb24pO28uc3RhcnQoKTtvLnN0b3AoQUMuY3VycmVudFRpbWUrZCl9Y2F0Y2goZSl7fX0KCi8qIC0tLS0tLS0tLS0gc2NlbmUgY29udHJvbCAtLS0tLS0tLS0tICovCmNvbnN0IElDT05TPVsn8J+UkCcsJ/Cfp7gnLCfwn46tJywn8J+OgicsJ/Cfk7gnLCfwn5KMJywn4pyJ77iPJywn8J+OgSddOwpJQ09OUy5mb3JFYWNoKGk9Pntjb25zdCBzPWRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoJ3NwYW4nKTtzLnRleHRDb250ZW50PWk7JCgnI3Byb2cnKS5hcHBlbmRDaGlsZChzKX0pOwpsZXQgY3VyPTA7CmZ1bmN0aW9uIGdvKG4peyQoJyNzJytjdXIpLmNsYXNzTGlzdC5yZW1vdmUoJ29uJyk7Y3VyPW47JCgnI3MnK24pLmNsYXNzTGlzdC5hZGQoJ29uJyk7Wy4uLiQoJyNwcm9nJykuY2hpbGRyZW5dLmZvckVhY2goKHMsaSk9PnMuY2xhc3NMaXN0LnRvZ2dsZSgnZG9uZScsaTw9bikpO2lmKG4+MCkkKCcjcHJvZycpLmNsYXNzTGlzdC5hZGQoJ3Nob3cnKTsoZW50ZXJbbl18fCgoKT0+e30pKSgpfQpjb25zdCBlbnRlcj17fTsKCi8qIDAgTE9DSyAqLwpsZXQgY29kZT0nJzsKY29uc3QgTD1DT05GSUcucGFzc2NvZGUubGVuZ3RoOyQoJyNkb3RzJykuaW5uZXJIVE1MPSc8Yj48L2I+Jy5yZXBlYXQoTCk7JCgnI2hpbnQnKS50ZXh0Q29udGVudD1DT05GSUcuaGludDsKWycxJywnMicsJzMnLCc0JywnNScsJzYnLCc3JywnOCcsJzknLCfijKsnLCcwJywn4pmlJ10uZm9yRWFjaChrPT57Y29uc3QgYj1kb2N1bWVudC5jcmVhdGVFbGVtZW50KCdidXR0b24nKTtiLnRleHRDb250ZW50PWs7Yi5vbmNsaWNrPSgpPT5wcmVzcyhrKTskKCcjcGFkJykuYXBwZW5kQ2hpbGQoYil9KTsKZnVuY3Rpb24gcHJlc3Moayl7YmxpcCg2NjArTWF0aC5yYW5kb20oKSozMDApO2lmKGs9PT0n4oyrJyl7Y29kZT1jb2RlLnNsaWNlKDAsLTEpfWVsc2UgaWYoaz09PSfimaUnKXskKCcjaGludCcpLnRleHRDb250ZW50PUNPTkZJRy5oaW50O3JldHVybn1lbHNlIGlmKGNvZGUubGVuZ3RoPEwpe2NvZGUrPWt9CiAgWy4uLiQoJyNkb3RzJykuY2hpbGRyZW5dLmZvckVhY2goKGQsaSk9PmQuY2xhc3NMaXN0LnRvZ2dsZSgnZicsaTxjb2RlLmxlbmd0aCkpOwogIGlmKGNvZGUubGVuZ3RoPT09TCl7c2V0VGltZW91dCgoKT0+e2lmKGNvZGU9PT1DT05GSUcucGFzc2NvZGUpeyQoJy5sb2NraWNvbicpLnRleHRDb250ZW50PSfwn5STJztibGlwKDEyMDAsLjMpO2hlYXJ0cygxMCk7c2V0VGltZW91dCgoKT0+Z28oMSksNzAwKX0KICAgIGVsc2V7JCgnI2xvY2tjYXJkJykuY2xhc3NMaXN0LnJlbW92ZSgnc2hha2UnKTt2b2lkICQoJyNsb2NrY2FyZCcpLm9mZnNldFdpZHRoOyQoJyNsb2NrY2FyZCcpLmNsYXNzTGlzdC5hZGQoJ3NoYWtlJyk7JCgnI2hpbnQnKS50ZXh0Q29udGVudD0nT29wcyEgd3JvbmcgY29kZSDwn5mIIHRyeSBhZ2Fpbic7Y29kZT0nJztbLi4uJCgnI2RvdHMnKS5jaGlsZHJlbl0uZm9yRWFjaChkPT5kLmNsYXNzTGlzdC5yZW1vdmUoJ2YnKSl9fSwyNTApfX0KCi8qIDEgQVNLICovCmNvbnN0IFQ9KHYsZCk9Pih2JiZTdHJpbmcodikudHJpbSgpKT92OmQ7CmRvY3VtZW50LnRpdGxlPVQoQ09ORklHLmhlYWRpbmcsJ0hhcHB5IEJpcnRoZGF5JykrJyAnK0NPTkZJRy5uYW1lKycg8J+OgSc7CiQoJyNhc2tUaXRsZScpLnRleHRDb250ZW50PWBIZXkgJHtDT05GSUcubmFtZX0hIPCfkpVgOwokKCcjYXNrRW1vamknKS50ZXh0Q29udGVudD1UKENPTkZJRy5hc2tFbW9qaSwn8J+nuCcpOwokKCcjYXNrTGluZScpLnRleHRDb250ZW50PVQoQ09ORklHLmFza0xpbmUsJ0kgbWFkZSBzb21ldGhpbmcgc3BlY2lhbCBmb3IgeW914oCmIHdhbm5hIHNlZT8g8J+luicpOwokKCcjYmRIZWFkJykudGV4dENvbnRlbnQ9VChDT05GSUcuaGVhZGluZywnSGFwcHkgQmlydGhkYXknKTsKaWYoQ09ORklHLl9fcHJldmlldyl7Y29uc3Qgdz1kb2N1bWVudC5jcmVhdGVFbGVtZW50KCdkaXYnKTt3LnRleHRDb250ZW50PSdQUkVWSUVXIMK3IPCflJIgdW5sb2NrIHRvIHNlbmQnO3cuc3R5bGUuY3NzVGV4dD0ncG9zaXRpb246Zml4ZWQ7Ym90dG9tOjcwcHg7bGVmdDo1MCU7dHJhbnNmb3JtOnRyYW5zbGF0ZVgoLTUwJSkgcm90YXRlKC00ZGVnKTt6LWluZGV4OjYwO2JhY2tncm91bmQ6cmdiYSgwLDAsMCwuNik7Y29sb3I6I2ZmZjtmb250OjcwMCAxMnB4IFBvcHBpbnMsc2Fucy1zZXJpZjtsZXR0ZXItc3BhY2luZzoycHg7cGFkZGluZzo3cHggMTRweDtib3JkZXItcmFkaXVzOjk5OXB4O3BvaW50ZXItZXZlbnRzOm5vbmU7Ym9yZGVyOjFweCBkYXNoZWQgcmdiYSgyNTUsMjU1LDI1NSwuNSknO2RvY3VtZW50LmJvZHkuYXBwZW5kQ2hpbGQodyl9CiQoJyNyVGl0bGUnKS50ZXh0Q29udGVudD1UKENPTkZJRy5yZWFzb25zVGl0bGUsIlJlYXNvbnMgeW91J3JlIGFtYXppbmciKTsKY29uc3Qgbm9MaW5lcz1bJ0FyZSB5b3Ugc3VyZT8g8J+luicsJ1RoaW5rIGFnYWluISEg8J+YpCcsJ1BsZWFzZWVlIPCfmY8nLCdZb3UgY2FuXCd0IGVzY2FwZSDwn5i8JywnSnVzdCBwcmVzcyBZRVMg8J+SlicsJ0lcJ2xsIGNyeSDwn5itJ107CmNvbnN0IG5vRW1vamk9Wyfwn6W6Jywn8J+YvycsJ/CfmK0nLCfwn5mAJywn8J+YvicsJ/CfkpQnXTtsZXQgbm9JPTAseWVzUz0xOwpmdW5jdGlvbiBkb2RnZSgpe2NvbnN0IHI9JCgnI25vQnRuJyk7ci5zdHlsZS50cmFuc2Zvcm09YHRyYW5zbGF0ZSgkeyhNYXRoLnJhbmRvbSgpLS41KSoyMjB9cHgsJHsoTWF0aC5yYW5kb20oKS0uNSkqMjAwfXB4KWA7CiAgJCgnI2Fza1R4dCcpLnRleHRDb250ZW50PW5vTGluZXNbbm9JJW5vTGluZXMubGVuZ3RoXTskKCcjYXNrRW1vamknKS50ZXh0Q29udGVudD1ub0Vtb2ppW25vSSVub0Vtb2ppLmxlbmd0aF07bm9JKys7eWVzUz1NYXRoLm1pbih5ZXNTKy4xOCwyKTskKCcjeWVzQnRuJykuc3R5bGUudHJhbnNmb3JtPWBzY2FsZSgke3llc1N9KWB9CiQoJyNub0J0bicpLmFkZEV2ZW50TGlzdGVuZXIoJ21vdXNlZW50ZXInLGRvZGdlKTskKCcjbm9CdG4nKS5hZGRFdmVudExpc3RlbmVyKCdjbGljaycsZT0+e2UucHJldmVudERlZmF1bHQoKTtkb2RnZSgpfSk7CiQoJyN5ZXNCdG4nKS5vbmNsaWNrPSgpPT57JCgnI2Fza0Vtb2ppJykudGV4dENvbnRlbnQ9J/CfpbAnO2hlYXJ0cygxNik7Z28oMil9OwoKLyogMiBDVVJUQUlOICovCiQoJyNiZE5hbWUnKS50ZXh0Q29udGVudD1DT05GSUcubmFtZTskKCcjYmRBZ2UnKS50ZXh0Q29udGVudD1DT05GSUcuYWdlPyfinKggJytUKENPTkZJRy5hZ2VMYWJlbCwnVFVSTklORyB7YWdlfScpLnJlcGxhY2UoJ3thZ2V9JyxDT05GSUcuYWdlKS50b1VwcGVyQ2FzZSgpKycg4pyoJzonJztpZighQ09ORklHLmFnZSkkKCcjYmRBZ2UnKS5zdHlsZS5kaXNwbGF5PSdub25lJzsKZW50ZXJbMl09YXN5bmMoKT0+e2F3YWl0IHNsZWVwKDcwMCk7Zm9yKGNvbnN0IG4gb2YgWyczJywnMicsJzEnXSl7Y29uc3QgYz0kKCcjY291bnQnKTtjLnRleHRDb250ZW50PW47Yy5jbGFzc0xpc3QucmVtb3ZlKCdwb3AnKTt2b2lkIGMub2Zmc2V0V2lkdGg7Yy5jbGFzc0xpc3QuYWRkKCdwb3AnKTtibGlwKDUwMCwuMTUpO2F3YWl0IHNsZWVwKDk1MCl9CiAgJCgnI2NvdW50JykudGV4dENvbnRlbnQ9Jyc7JCgnI3MyJykuY2xhc3NMaXN0LmFkZCgnb3BlbicpO3N0YXJ0TXVzaWMoKTthd2FpdCBzbGVlcCgxMjAwKTtjb25mZXR0aSgyMjApO2J1cnN0KGlubmVyV2lkdGgqLjI1LGlubmVySGVpZ2h0Ki4zKTtidXJzdChpbm5lcldpZHRoKi43NSxpbm5lckhlaWdodCouMyk7YXdhaXQgc2xlZXAoMTUwMCk7JCgnI24yJykuY2xhc3NMaXN0LmFkZCgnc2hvdycpfTsKJCgnI24yJykub25jbGljaz0oKT0+Z28oMyk7CgovKiAzIENBS0UgKi8KY29uc3QgY2FrZT0kKCcjY2FrZScpO2ZvcihsZXQgaT0wO2k8MjY7aSsrKXtjb25zdCBzPWRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoJ2knKTtzLmNsYXNzTmFtZT0nc3ByaW5rbGUnO3Muc3R5bGUuYmFja2dyb3VuZD1DT0xTW2klNV07CiAgY29uc3QgdG9wPWk8MTQ7cy5zdHlsZS5sZWZ0PSh0b3A/NDA6MTApK01hdGgucmFuZG9tKCkqKHRvcD8xNDA6MjAwKSsncHgnO3Muc3R5bGUuYm90dG9tPSh0b3A/MTAwOjI0KStNYXRoLnJhbmRvbSgpKih0b3A/NDA6NTApKydweCc7cy5zdHlsZS50cmFuc2Zvcm09YHJvdGF0ZSgke01hdGgucmFuZG9tKCkqMTgwfWRlZylgO2Nha2UuYXBwZW5kQ2hpbGQocyl9CmxldCBsZWZ0PUNPTkZJRy5jYW5kbGVzOwpmb3IobGV0IGk9MDtpPENPTkZJRy5jYW5kbGVzO2krKyl7Y29uc3QgYz1kb2N1bWVudC5jcmVhdGVFbGVtZW50KCdkaXYnKTtjLmNsYXNzTmFtZT0nY2FuZGxlJztjLmlubmVySFRNTD0nPGRpdiBjbGFzcz0iZmxhbWUiPjwvZGl2PjxkaXYgY2xhc3M9InNtb2tlIj48L2Rpdj4nOwogIGMub25jbGljaz0oKT0+e2lmKGMuY2xhc3NMaXN0LmNvbnRhaW5zKCdvdXQnKSlyZXR1cm47Yy5jbGFzc0xpc3QuYWRkKCdvdXQnKTtibGlwKDMwMCwuMik7bGVmdC0tO2lmKCFsZWZ0KXskKCcjY2FrZVRpdGxlJykudGV4dENvbnRlbnQ9J01ha2UgYSB3aXNoIOKcqCc7JCgnI2Nha2VTdWInKS50ZXh0Q29udGVudD0nbWF5IGFsbCB5b3VyIHdpc2hlcyBjb21lIHRydWUg8J+MoCc7Y29uZmV0dGkoMTYwKTtoZWFydHMoMTIpOyQoJyNuMycpLmNsYXNzTGlzdC5hZGQoJ3Nob3cnKX19OwogICQoJyNjYW5kbGVzJykuYXBwZW5kQ2hpbGQoYyl9CiQoJyNjYW5kbGVzJykuc3R5bGUuZ2FwPU1hdGgubWF4KDYsMjItQ09ORklHLmNhbmRsZXMqMikrJ3B4JzsKJCgnI24zJykub25jbGljaz0oKT0+Z28oNCk7CgovKiA0IFBPTEFST0lEUyAqLwpmdW5jdGlvbiBwb2xIVE1MKHApe2NvbnN0IHN0PXAuaW1nP2BiYWNrZ3JvdW5kLWltYWdlOnVybCgiJHtTdHJpbmcocC5pbWcpLnJlcGxhY2UoLyIvZywnJyl9IilgOmBiYWNrZ3JvdW5kOmxpbmVhci1ncmFkaWVudCgxMzVkZWcsaHNsKCR7TWF0aC5yYW5kb20oKSozNjB9LDgwJSw4MCUpLGhzbCgke01hdGgucmFuZG9tKCkqMzYwfSw4MCUsNzAlKSlgOwogIHJldHVybiBgPGRpdiBjbGFzcz0icGgiIHN0eWxlPSIke3N0fSI+JHtwLmltZz8nJzplc2MocC5lbW9qaSl9PC9kaXY+PHA+JHtlc2MocC5jYXB0aW9uKX08L3A+YH0KY29uc3Qgc3BvdHM9W1szLDJdLFs1MiwwXSxbMjgsMjJdLFsyLDQ2XSxbNTQsNDBdLFsyNiw2Ml1dOwpDT05GSUcucGhvdG9zLnNsaWNlKDAsNikuZm9yRWFjaCgocCxpKT0+e2NvbnN0IGQ9ZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgnZGl2Jyk7ZC5jbGFzc05hbWU9J3BvbCc7ZC5pbm5lckhUTUw9cG9sSFRNTChwKTsKICBjb25zdCBbeCx5XT1zcG90c1tpXTtkLnN0eWxlLmxlZnQ9eCsnJSc7ZC5zdHlsZS50b3A9eSsnJSc7ZC5kYXRhc2V0LnI9KE1hdGgucmFuZG9tKCkqMjAtMTApLnRvRml4ZWQoMSk7ZC5zdHlsZS50cmFuc2Zvcm09YHJvdGF0ZSgke2QuZGF0YXNldC5yfWRlZykgc2NhbGUoLjQpYDsKICBkLm9uY2xpY2s9KCk9PnskKCcjem9vbScpLmlubmVySFRNTD1gPGRpdiBjbGFzcz0icG9sIj4ke2QuaW5uZXJIVE1MfTwvZGl2PjxwIGNsYXNzPSJzdWIiIHN0eWxlPSJtYXJnaW4tdG9wOjIwcHgiPnRhcCBhbnl3aGVyZSB0byBjbG9zZTwvcD5gOyQoJyN6b29tJykuY2xhc3NMaXN0LmFkZCgnb24nKTtibGlwKDkwMCl9OyQoJyNib2FyZCcpLmFwcGVuZENoaWxkKGQpfSk7CiQoJyN6b29tJykub25jbGljaz0oKT0+JCgnI3pvb20nKS5jbGFzc0xpc3QucmVtb3ZlKCdvbicpOwplbnRlcls0XT1hc3luYygpPT57Y29uc3QgcHM9Wy4uLmRvY3VtZW50LnF1ZXJ5U2VsZWN0b3JBbGwoJyNib2FyZCAucG9sJyldO2Zvcihjb25zdCBkIG9mIHBzKXthd2FpdCBzbGVlcCgzODApO2QuY2xhc3NMaXN0LmFkZCgnaW4nKTtkLnN0eWxlLnRyYW5zZm9ybT1gcm90YXRlKCR7ZC5kYXRhc2V0LnJ9ZGVnKWA7YmxpcCgxMDAwLC4wNSl9YXdhaXQgc2xlZXAoNTAwKTskKCcjbjQnKS5jbGFzc0xpc3QuYWRkKCdzaG93Jyl9OwokKCcjbjQnKS5vbmNsaWNrPSgpPT5nbyg1KTsKCi8qIDUgUkVBU09OUyAqLwpjb25zdCBjYXJkcz1DT05GSUcucmVhc29ucy5tYXAoKHIsaSk9Pntjb25zdCBjPWRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoJ2RpdicpO2MuY2xhc3NOYW1lPSdjYXJkJzsKICBjLmlubmVySFRNTD1gPGRpdiBjbGFzcz0ibnVtIj5SRUFTT04gIyR7aSsxfTwvZGl2PjxkaXYgY2xhc3M9ImVtIj4ke2VzYyhyLmVtb2ppKX08L2Rpdj48ZGl2IGNsYXNzPSJ0eCI+JHtlc2Moci50ZXh0KX08L2Rpdj5gOwogIGMuc3R5bGUuekluZGV4PTEwMC1pO2Muc3R5bGUudHJhbnNmb3JtPWByb3RhdGUoJHsoaSUyPzE6LTEpKmkqMi41fWRlZykgdHJhbnNsYXRlWSgke2kqNH1weClgOyQoJyNkZWNrJykuYXBwZW5kQ2hpbGQoYyk7cmV0dXJuIGN9KTsKbGV0IHJpPTA7JCgnI2RlY2snKS5vbmNsaWNrPSgpPT57aWYocmk+PWNhcmRzLmxlbmd0aClyZXR1cm47Y2FyZHNbcmldLmNsYXNzTGlzdC5hZGQoJ2dvbmUnKTtibGlwKDcwMCk7cmkrKzsKICBpZihyaT09PWNhcmRzLmxlbmd0aCl7JCgnI3JzdWInKS50ZXh0Q29udGVudD0n4oCmYW5kIGEgbWlsbGlvbiBtb3JlIPCfkp4nO2hlYXJ0cygxNik7JCgnI241JykuY2xhc3NMaXN0LmFkZCgnc2hvdycpfWVsc2UgJCgnI3JzdWInKS50ZXh0Q29udGVudD1gJHtyaX0vJHtjYXJkcy5sZW5ndGh9YH07CiQoJyNuNScpLm9uY2xpY2s9KCk9PmdvKDYpOwoKLyogNiBMRVRURVIgKi8KbGV0IG9wZW5lZD1mYWxzZTsKJCgnI2VudicpLm9uY2xpY2s9YXN5bmMoKT0+e2lmKG9wZW5lZClyZXR1cm47b3BlbmVkPXRydWU7JCgnI2VudicpLmNsYXNzTGlzdC5hZGQoJ29wZW4nKTskKCcjbGV0VGl0bGUnKS5zdHlsZS5vcGFjaXR5PTA7JCgnI2xldFN1YicpLnN0eWxlLm9wYWNpdHk9MDtibGlwKDUwMCwuMik7CiAgYXdhaXQgc2xlZXAoMTYwMCk7Y29uc3QgcD0kKCcjcGFwZXInKTtwLmNsYXNzTGlzdC5hZGQoJ2NhcmV0Jyk7CiAgZm9yKGNvbnN0IGNoIG9mIENPTkZJRy5sZXR0ZXIpe2lmKGNoPT09J1xuJylwLmFwcGVuZENoaWxkKGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoJ2JyJykpO2Vsc2UgcC5hcHBlbmRDaGlsZChkb2N1bWVudC5jcmVhdGVUZXh0Tm9kZShjaCkpO3Auc2Nyb2xsVG9wPXAuc2Nyb2xsSGVpZ2h0O2F3YWl0IHNsZWVwKGNoPT09J1xuJz8xMjA6MzIpfQogIHAuY2xhc3NMaXN0LnJlbW92ZSgnY2FyZXQnKTskKCcjbjYnKS5jbGFzc0xpc3QuYWRkKCdzaG93Jyl9OwokKCcjbjYnKS5vbmNsaWNrPSgpPT5nbyg3KTsKCi8qIDcgR0lGVCAqLwokKCcjZmluYWxUaXRsZScpLnRleHRDb250ZW50PUNPTkZJRy5maW5hbFRpdGxlOyQoJyNmaW5hbE1zZycpLnRleHRDb250ZW50PUNPTkZJRy5maW5hbE1zZzsKbGV0IGZ3OyQoJyNnaWZ0Jykub25jbGljaz0oKT0+e2NvbnN0IGc9JCgnI2dpZnQnKTtpZihnLmNsYXNzTGlzdC5jb250YWlucygnb3BlbmVkJykpcmV0dXJuO2cuY2xhc3NMaXN0LmFkZCgnb3BlbmVkJyk7JCgnI2dpZnRUaXRsZScpLnN0eWxlLmRpc3BsYXk9J25vbmUnO2JsaXAoMTQwMCwuNCk7CiAgY29uZmV0dGkoMjYwKTtoZWFydHMoMjQpO2xldCBrPTA7Znc9c2V0SW50ZXJ2YWwoKCk9PntidXJzdChNYXRoLnJhbmRvbSgpKmlubmVyV2lkdGgsTWF0aC5yYW5kb20oKSppbm5lckhlaWdodCouNSs0MCw4MCk7aWYoKytrPjE0KWNsZWFySW50ZXJ2YWwoZncpfSw0NTApOwogIHNldFRpbWVvdXQoKCk9PntnLnN0eWxlLmRpc3BsYXk9J25vbmUnOyQoJyNmaW5hbCcpLmNsYXNzTGlzdC5hZGQoJ3Nob3cnKX0sOTAwKX07Cjwvc2NyaXB0Pgo8L2JvZHk+CjwvaHRtbD4K";
+const GIFT_TPL = new TextDecoder().decode(Uint8Array.from(atob(GIFT_B64), c => c.charCodeAt(0)));
+const $ = s => document.querySelector(s);
+const toast = m => { const t=$('#toast'); t.textContent=m; t.classList.add('on'); clearTimeout(toast.t); toast.t=setTimeout(()=>t.classList.remove('on'),2600) };
+
+const THEMES={rose:["#3b0f3f","#ff5c9a","Rose"],royal:["#2a1460","#a77bff","Royal"],ocean:["#0b3a5c","#33c3ff","Ocean"],sunset:["#5c1f0b","#ff8a3d","Sunset"],mint:["#0d4637","#2fe0a5","Mint"]};
+/* ================= RELATIONSHIP PRESETS =================
+   {name} and {from} are replaced automatically.
+   Add a new relationship by copying one block.            */
+const CAP_COUPLE=[["💍","the day it began"],["🌅","our first trip"],["😂","silly us"],["🏡","our little world"],["🍽️","date nights"],["❤️","forever & always"]];
+const BDAY={heading:"Happy Birthday",ageLabel:"TURNING {age}",hint:"Hint: your birthday (DDMM) 🎂"};
+const ANNIV={heading:"Happy Anniversary",ageLabel:"{age} YEARS TOGETHER",hint:"Hint: our special date (DDMM) 💍",captions:CAP_COUPLE};
+
+const RELS={
+  sister:{label:"Sister",emoji:"👭",couple:false},
+  brother:{label:"Brother",emoji:"👦",couple:false},
+  bestie:{label:"Best Friend",emoji:"👯",couple:false},
+  husband:{label:"Husband",emoji:"🤵",couple:true},
+  wife:{label:"Wife",emoji:"👰",couple:true},
+  girlfriend:{label:"Girlfriend",emoji:"💁‍♀️",couple:true},
+  boyfriend:{label:"Boyfriend",emoji:"🙋‍♂️",couple:true},
+  mom:{label:"Mom",emoji:"👩",couple:false},
+  dad:{label:"Dad",emoji:"👨",couple:false}
+};
+
+const PRESETS={
+ birthday:{
+  sister:{...BDAY,theme:"rose",askEmoji:"🧸",askLine:"Your favourite sibling made something for you… wanna see? 🥺",reasonsTitle:"Why you're the best sister",
+   captions:[["👶","little us"],["🍫","stolen chocolates"],["🤭","partners in crime"],["📸","family pics"],["🛍️","shopping sprees"],["🏡","home ❤️"]],
+   reasons:[["🤗","You're my first best friend and my forever one"],["🙊","You keep all my secrets (and know all of them)"],["😂","Our fights last 5 minutes, our jokes last forever"],["💪","You always have my back, even against mom & dad"],["🌸","You make our home brighter just by being in it"]],
+   letter:"Dear {name},\n\nHappy birthday to my sister, my partner in crime and my lifelong best friend! 🎀\n\nWe've fought over remotes, clothes and the last slice of everything — but there's no one I'd rather grow up with.\n\nThank you for every secret kept, every laugh shared and every time you stood up for me.\n\nStay crazy, stay you. I'm always here for you.\n\nLove you loads,\n{from}",
+   finalTitle:"Love you, Sis! 💖",finalMsg:"No matter how old we get, you'll always be my favourite person to annoy. Happy Birthday! 🎂"},
+  brother:{...BDAY,theme:"ocean",askEmoji:"🐶",askLine:"Okay bro, don't laugh… I made something for you 😅",reasonsTitle:"Why you're the best brother",
+   captions:[["🎮","gaming battles"],["🏏","cricket days"],["🍔","midnight snacks"],["😂","dumb jokes"],["🚗","road trips"],["🏡","home ❤️"]],
+   reasons:[["🛡️","You act tough but you're my biggest protector"],["😂","Nobody can annoy me AND make me laugh like you"],["🎮","Best teammate in every game (except when you cheat)"],["🤝","You're always there when it really matters"],["🌟","I secretly look up to you (don't let it go to your head)"]],
+   letter:"Hey {name},\n\nHappy birthday, bro! 🎉\n\nI don't say it often (okay, never), but you mean a lot to me. From fighting over the TV remote to covering for each other — we've been through it all.\n\nThanks for being my protector, my teammate and my forever partner in mischief.\n\nHave the best year ever. You deserve it.\n\nYour favourite sibling,\n{from}",
+   finalTitle:"Love you, Bro! 💙",finalMsg:"Stay awesome, stay annoying, stay mine. Happy Birthday! 🎂"},
+  bestie:{...BDAY,theme:"sunset",askEmoji:"🐻",askLine:"Bestie alert 🚨 I made something for you… wanna see?",reasonsTitle:"Why you're my bestie",
+   captions:[["🤪","our first selfie"],["🍕","food dates"],["🎉","party nights"],["🤫","secret talks"],["✈️","trips together"],["😂","laughing at nothing"]],
+   reasons:[["😂","We laugh at things nobody else understands"],["📞","3 AM calls? You always pick up"],["🫂","You know me better than I know myself"],["🍕","You share your food (sometimes)"],["💛","Life is 10x more fun with you in it"]],
+   letter:"Dear {name},\n\nHappy birthday to my bestie, my therapist, my partner in crime! 🥳\n\nFrom random late-night talks to laughing until we cried — every memory with you is my favourite.\n\nThank you for staying through my good days, bad days and weird days.\n\nHere's to more trips, more food and more stupid jokes together.\n\nForever your bestie,\n{from}",
+   finalTitle:"Besties forever! 💛",finalMsg:"Thank you for being my person. Happy Birthday, bestie! 🎂✨"},
+  husband:{...BDAY,theme:"royal",askEmoji:"💌",askLine:"My love, I made something just for you… wanna see? 🥺",reasonsTitle:"Why I love you",
+   captions:[["💍","our wedding"],["🌅","first trip together"],["☕","morning chai"],["🏡","our home"],["😂","silly us"],["❤️","forever"]],
+   reasons:[["🛡️","You make me feel safe every single day"],["😊","Your smile is still my favourite view"],["🫶","You work so hard for our family"],["😂","You make even ordinary days fun"],["💍","Choosing you was my best decision"]],
+   letter:"My dearest {name},\n\nHappy birthday to my husband, my best friend and my home. ❤️\n\nEvery day with you feels like a blessing. Thank you for your love, your patience and for always standing by my side.\n\nI pray this year brings you all the happiness, success and peace you deserve.\n\nI love you more than words can say.\n\nForever yours,\n{from}",
+   finalTitle:"I love you, Jaan! 💖",finalMsg:"Thank you for being my everything. Happy Birthday, my love! 🎂"},
+  wife:{...BDAY,theme:"rose",askEmoji:"🌹",askLine:"My queen, I made something special for you… wanna see? 🥺",reasonsTitle:"Why I love you",
+   captions:[["💍","our wedding"],["🌅","first trip together"],["☕","morning chai"],["🏡","our home"],["👑","my queen"],["❤️","forever"]],
+   reasons:[["🏡","You turned our house into a home"],["😊","Your smile makes every bad day okay"],["🫶","You care for everyone with so much love"],["🌸","You're beautiful inside and out"],["💍","Marrying you was my best decision"]],
+   letter:"My dearest {name},\n\nHappy birthday to my wife, my best friend and the queen of my heart. 👑\n\nYou make every day brighter with your love, your care and that beautiful smile.\n\nThank you for everything you do for us — I see it, and I'm grateful for it every single day.\n\nMay this year bring you endless happiness. You deserve the world.\n\nForever yours,\n{from}",
+   finalTitle:"I love you, Jaan! 💖",finalMsg:"You're my today and all of my tomorrows. Happy Birthday, my love! 🎂"},
+  girlfriend:{...BDAY,theme:"rose",askEmoji:"🧸",askLine:"Hey cutie, I made something for you… wanna see? 🥺",reasonsTitle:"Why I'm crazy about you",
+   captions:[["💕","our first date"],["📸","cute us"],["🍦","ice cream dates"],["🌙","late night calls"],["🎡","best day ever"],["🥰","you & me"]],
+   reasons:[["😊","Your smile literally fixes my bad days"],["📞","I could talk to you for hours and never get bored"],["🥰","You make me want to be a better person"],["😂","You laugh at my worst jokes"],["💕","Every moment with you feels like a movie"]],
+   letter:"Dear {name},\n\nHappy birthday to the most beautiful girl in my world! 💖\n\nEver since you came into my life, everything feels a little brighter. Thank you for every laugh, every late-night call and every moment you made special.\n\nI hope this year gives you everything you wish for — and I hope I get to be there for all of it.\n\nAlways yours,\n{from}",
+   finalTitle:"I love you! 💖",finalMsg:"You're my favourite notification. Happy Birthday, cutie! 🎂✨"},
+  boyfriend:{...BDAY,theme:"royal",askEmoji:"🐻",askLine:"Hey you, I made something for you… wanna see? 🥺",reasonsTitle:"Why I'm crazy about you",
+   captions:[["💕","our first date"],["📸","cute us"],["🍔","food dates"],["🌙","late night calls"],["🎡","best day ever"],["🥰","you & me"]],
+   reasons:[["🛡️","You make me feel safe and loved"],["😂","You make me laugh even when I'm mad at you"],["📞","Our late-night calls are my favourite"],["🫶","You care about the little things"],["💙","You're my favourite person, always"]],
+   letter:"Dear {name},\n\nHappy birthday to my favourite human! 💙\n\nThank you for loving me, putting up with my mood swings and always making me smile.\n\nEvery day with you is my favourite day. I'm so lucky to have you.\n\nHere's to your best year yet — with me by your side.\n\nAlways yours,\n{from}",
+   finalTitle:"I love you! 💙",finalMsg:"You're my forever favourite. Happy Birthday, my love! 🎂✨"},
+  mom:{...BDAY,theme:"rose",askEmoji:"🌷",askLine:"Mumma, I made something special for you… wanna see? 🥺",reasonsTitle:"Why you're the best mom",
+   captions:[["👶","baby me"],["🍲","your magic food"],["🤗","warm hugs"],["📸","family pics"],["🎉","celebrations"],["🏡","home ❤️"]],
+   reasons:[["🍲","Nobody's food tastes like yours"],["🤗","Your hugs fix everything"],["🙏","Your prayers protect me every day"],["💪","You're the strongest person I know"],["💖","You love us without asking anything back"]],
+   letter:"Dear Mumma,\n\nHappy birthday to the best mom in the whole world! 🌷\n\nEverything I am today is because of your love, your sacrifices and your prayers.\n\nThank you for every meal, every hug and every late night you stayed up for me.\n\nI may not say it enough, but I love you more than anything.\n\nYour child,\n{from}",
+   finalTitle:"Love you, Mumma! 💖",finalMsg:"You're my first home and my forever hero. Happy Birthday! 🎂"},
+  dad:{...BDAY,theme:"ocean",askEmoji:"🎩",askLine:"Papa, I made something special for you… wanna see? 😊",reasonsTitle:"Why you're the best dad",
+   captions:[["👶","baby me"],["🚲","you taught me to ride"],["🏏","cricket with you"],["📸","family pics"],["🎉","celebrations"],["🏡","home ❤️"]],
+   reasons:[["🛡️","You make the whole family feel safe"],["💪","You work so hard and never complain"],["😂","Your dad jokes are secretly the best"],["🧭","You taught me right from wrong"],["🌟","You're my first hero"]],
+   letter:"Dear Papa,\n\nHappy birthday to my hero! 💙\n\nThank you for every sacrifice you made quietly so we could have everything we needed.\n\nYou taught me to be strong, honest and kind — just like you.\n\nI hope this year brings you as much happiness as you've given all of us.\n\nLove you always,\n{from}",
+   finalTitle:"Love you, Papa! 💙",finalMsg:"The world's best dad deserves the world's best day. Happy Birthday! 🎂"}
+ },
+ anniversary:{
+  husband:{...ANNIV,theme:"royal",askEmoji:"💍",askLine:"Happy anniversary, my love… I made something for you 🥺",reasonsTitle:"Why I'd choose you again",
+   reasons:[["💍","You keep your promises, every single day"],["🛡️","You're my safe place"],["😂","You still make me laugh like day one"],["🫶","We grow stronger every year"],["🏡","Home is wherever you are"]],
+   letter:"My dearest {name},\n\nHappy anniversary, my love! 💍\n\nAnother year of holding hands, sharing dreams and building our little world together.\n\nThank you for your love, your patience and for choosing me every single day. I'd choose you again in every lifetime.\n\nHere's to forever.\n\nYours always,\n{from}",
+   finalTitle:"Happy Anniversary, Jaan! 💖",finalMsg:"Every year with you is my favourite year. Here's to forever! 🥂"},
+  wife:{...ANNIV,theme:"rose",askEmoji:"🌹",askLine:"Happy anniversary, my queen… I made something for you 🥺",reasonsTitle:"Why I'd marry you again",
+   reasons:[["🏡","You made our house a home"],["😊","Your smile still gives me butterflies"],["🫶","You stood by me through everything"],["🌸","You get more beautiful every year"],["💍","Marrying you was my best decision"]],
+   letter:"My dearest {name},\n\nHappy anniversary, my love! 💍\n\nAnother year of laughter, little fights, big dreams and endless love.\n\nThank you for making our house a home and for loving me on my good and bad days. I'd marry you again in every lifetime.\n\nHere's to forever.\n\nYours always,\n{from}",
+   finalTitle:"Happy Anniversary, Jaan! 💖",finalMsg:"Every year with you is my favourite year. Here's to forever! 🥂"},
+  girlfriend:{...ANNIV,ageLabel:"{age} OF US",theme:"rose",askEmoji:"🧸",askLine:"Happy anniversary, cutie! I made something for you… 🥺",reasonsTitle:"Why I fall for you every day",
+   reasons:[["💕","Every day with you feels like a date"],["😊","You still give me butterflies"],["📞","You're the first person I want to tell everything"],["🥰","You make me a better person"],["🌙","I can't imagine my life without you"]],
+   letter:"Dear {name},\n\nHappy anniversary, my love! 💕\n\nI still remember the day we started — and somehow I love you more every single day since.\n\nThank you for the laughs, the late-night calls and for being my favourite person.\n\nHere's to many more years of us.\n\nAlways yours,\n{from}",
+   finalTitle:"Happy Anniversary! 💖",finalMsg:"Falling for you was the best thing I ever did. Here's to us! 🥂"},
+  boyfriend:{...ANNIV,ageLabel:"{age} OF US",theme:"royal",askEmoji:"🐻",askLine:"Happy anniversary, you! I made something for you… 🥺",reasonsTitle:"Why I fall for you every day",
+   reasons:[["🛡️","You make me feel safe and loved"],["😊","You still give me butterflies"],["📞","You're the first person I want to tell everything"],["🥰","You make me a better person"],["🌙","I can't imagine my life without you"]],
+   letter:"Dear {name},\n\nHappy anniversary, my love! 💙\n\nI still remember the day we started — and somehow I love you more every single day since.\n\nThank you for the laughs, the late-night calls and for being my favourite person.\n\nHere's to many more years of us.\n\nAlways yours,\n{from}",
+   finalTitle:"Happy Anniversary! 💙",finalMsg:"Falling for you was the best thing I ever did. Here's to us! 🥂"}
+ }
+};
+
+const EMOJIS=["🥳","🍕","🏖️","📸","🌙","🎡"];
+const fill=(t,c)=>String(t).replace(/\{name\}/g,c.name||'').replace(/\{from\}/g,c.from||'');
+function presetData(occ,rel,c){
+  const p=PRESETS[occ][rel];
+  return {theme:p.theme,hint:p.hint,heading:p.heading,ageLabel:p.ageLabel,askEmoji:p.askEmoji,askLine:p.askLine,reasonsTitle:p.reasonsTitle,
+    reasons:p.reasons.map(([e,t])=>({emoji:e,text:fill(t,c)})),letter:fill(p.letter,c),finalTitle:fill(p.finalTitle,c),finalMsg:fill(p.finalMsg,c),
+    captions:p.captions||PRESETS.birthday[rel].captions};
+}
+const DEFAULT=(()=>{const c={name:"Ayesha",from:"Ali",age:"21",candles:5,passcode:"1411",occ:"birthday",rel:"girlfriend",playMusic:true};
+  const d=presetData('birthday','girlfriend',c);c.photos=d.captions.map(([e,t])=>({img:"",emoji:e,caption:t}));delete d.captions;return Object.assign(c,d)})();
+
+/* ---------- link encoding ---------- */
+const b64u = bytes => { let s=''; bytes.forEach(b=>s+=String.fromCharCode(b)); return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'') };
+const unb64u = s => Uint8Array.from(atob(s.replace(/-/g,'+').replace(/_/g,'/')), c=>c.charCodeAt(0));
+async function pack(obj){
+  const raw=new TextEncoder().encode(JSON.stringify(obj));
+  if(window.CompressionStream){const z=await new Response(new Blob([raw]).stream().pipeThrough(new CompressionStream('deflate-raw'))).arrayBuffer();return 'z'+b64u(new Uint8Array(z))}
+  return 'b'+b64u(raw);
+}
+async function unpack(s){
+  const bytes=unb64u(s.slice(1));
+  const raw=s[0]==='z'?new Uint8Array(await new Response(new Blob([bytes]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).arrayBuffer()):bytes;
+  return JSON.parse(new TextDecoder().decode(raw));
+}
+function buildGift(cfg){
+  const json=JSON.stringify(cfg).replace(/</g,'\\u003c');
+  return GIFT_TPL.replace('<!--CFG-->','<script>window.__CFG__='+json+';<\/script>');
+}
+
+/* ---------- editor ---------- */
+let S;
+function save(){try{localStorage.setItem('bdayDraft',JSON.stringify(S))}catch(e){try{localStorage.setItem('bdayDraft',JSON.stringify({...S,photos:S.photos.map(p=>({...p,img:''}))}))}catch(_){}}}
+const FIELDS=['name','from','age','candles','passcode','hint','letter','finalTitle','finalMsg','heading','ageLabel','askEmoji','askLine','reasonsTitle'];
+const SYNC=['letter','finalTitle','finalMsg','askLine'];
+function syncName(old,val){if(old&&old.trim().length>=2&&val.trim()){const re=new RegExp(old.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'g');
+  SYNC.forEach(k=>{S[k]=S[k].replace(re,val);$('#'+k).value=S[k]});S.reasons.forEach(r=>r.text=r.text.replace(re,val));renderReasons()}}
+function refresh(){FIELDS.forEach(id=>$('#'+id).value=S[id]);$('#lcount').textContent=S.letter.length+' / 2000';
+  document.querySelectorAll('.th').forEach(x=>x.classList.toggle('sel',x.dataset.k===S.theme));
+  document.querySelectorAll('#occ button').forEach(b=>b.classList.toggle('sel',b.dataset.o===S.occ));
+  document.querySelectorAll('.rel').forEach(r=>{r.classList.toggle('sel',r.dataset.r===S.rel);r.classList.toggle('off',S.occ==='anniversary'&&!RELS[r.dataset.r].couple)});
+  $('#nameLbl').textContent=S.occ==='anniversary'?'Partner\'s name':'Birthday person\'s name';
+  $('#ageLbl').textContent=S.occ==='anniversary'?'Years together (e.g. 2)':'Age (optional)';
+  renderPhotos();renderReasons()}
+function applyPreset(){const d=presetData(S.occ,S.rel,S);d.captions.forEach(([e,t],i)=>{S.photos[i]=S.photos[i]||{img:''};S.photos[i].emoji=e;S.photos[i].caption=t});delete d.captions;
+  Object.assign(S,d);refresh();save();toast(`${RELS[S.rel].emoji} ${RELS[S.rel].label} ${S.occ==='anniversary'?'anniversary':'birthday'} texts ready — edit anything ✏️`)}
+let UNLOCKED=false;
+function newOrder(){const a='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let s='SM-';crypto.getRandomValues(new Uint8Array(6)).forEach(x=>s+=a[x%a.length]);return s}
+async function verifyCode(order,code){try{const m=String(code||'').trim().match(/^SM1-([A-Za-z0-9_-]{80,90})$/);if(!m)return false;
+  const key=await crypto.subtle.importKey('jwk',PUBKEY,{name:'ECDSA',namedCurve:'P-256'},false,['verify']);
+  return await crypto.subtle.verify({name:'ECDSA',hash:'SHA-256'},key,unb64u(m[1]),new TextEncoder().encode(order))}catch(e){return false}}
+function applyLock(){
+  const b=$('#lockBadge');
+  if(UNLOCKED){b.className='lockbadge ok';b.textContent='✅ Unlocked · '+S.order}else{b.className='lockbadge';b.textContent=`🔒 Free preview · ${SHOP.currency} ${SHOP.price} to unlock`}
+  ['name','from'].forEach(id=>$('#'+id).readOnly=UNLOCKED);
+  $('#nameLock').style.display=UNLOCKED?'block':'none';$('#nameLock').textContent='🔒 Names are locked for this order (1 payment = 1 surprise). Other text, photos & theme can still be changed.';
+  $('#download').textContent=UNLOCKED?'⬇️ Download':'🔒 Download';$('#link').textContent=UNLOCKED?'🔗 Get link':'🔒 Get link';
+  $('#newGift').style.display=UNLOCKED?'block':'none';
+  $('#payHome').style.display=UNLOCKED?'none':'block';$('#paidBox').style.display=UNLOCKED?'block':'none';$('#paidOrder').textContent=S.order;
+  $('#payCardTitle').textContent=UNLOCKED?'✅ Unlocked':`💳 Payment & unlock — ${SHOP.currency} ${SHOP.price}`;
+  if(!UNLOCKED&&!$('#pay').classList.contains('on')){placePanel(false);fillPay()}
+  renderPhotos();
+}
+const waLink=(num,msg)=>`https://wa.me/${num}?text=${encodeURIComponent(msg)}`;
+let payM='easypaisa';
+function placePanel(inSheet){(inSheet?$('#paySlot'):$('#payHome')).appendChild($('#payPanel'))}
+function closePay(){$('#pay').classList.remove('on');if(!UNLOCKED)placePanel(false)}
+function fillPay(){
+  $('#priceTx').textContent=`${SHOP.currency} ${SHOP.price}`;$('#oldPrice').textContent=SHOP.oldPrice?`${SHOP.currency} ${SHOP.oldPrice}`:'';
+  $('#pOrder').textContent=S.order;
+  $('#pFor').textContent=`🎁 For: ${S.name||'—'}  ·  From: ${S.from||'—'} — naam check kar lein, payment ke baad change nahi honge.`;
+  $('#dfy').textContent=`Khud nahi banana? Hum aap ke liye bana dein — ${SHOP.currency} ${SHOP.doneForYouPrice} →`;
+  $('#dfy').href=waLink(SHOP.whatsapp,`Assalam o Alaikum! Mujhe done-for-you surprise website chahiye (${SHOP.currency} ${SHOP.doneForYouPrice}).\nFor: ${S.name} (${RELS[S.rel].label} ${S.occ})`);
+  renderPay();
+}
+function openPay(){fillPay();placePanel(true);$('#pay').classList.add('on')}
+function renderPay(){
+  document.querySelectorAll('#payTabs button').forEach(b=>b.classList.toggle('sel',b.dataset.m===payM));
+  const body=$('#payBody'),amt=`${SHOP.currency} ${SHOP.price}`;
+  if(payM==='card'){
+    body.innerHTML=SHOP.cardLink?`<b>Visa / Mastercard</b><br>Neeche button se ${amt} pay karein, phir receipt ka Reference/TID neeche likhein.<a class="paylink" href="${SHOP.cardLink}" target="_blank" rel="noopener">💳 Pay ${amt} by card</a>`
+      :`💳 Card payment jald aa raha hai.<br>Abhi <b>Easypaisa</b> ya <b>JazzCash</b> se pay karein — 1 minute lagta hai.`;
+  }else{
+    const w=SHOP[payM],nm=payM==='easypaisa'?'Easypaisa':'JazzCash';
+    body.innerHTML=`<b>1.</b> Apni ${nm} app kholein → <b>Send Money</b><br><b>2.</b> Is number par <b>${amt}</b> bhejein:
+      <div class="num"><span>${w.number}</span><button class="cpn">Copy</button></div>Account title: <b>${w.title}</b><br><b>3.</b> Transaction ID (TID) neeche likh kar WhatsApp par bhejein.`;
+    body.querySelector('.cpn').onclick=async()=>{try{await navigator.clipboard.writeText(w.number.replace(/\D/g,''));toast('Number copied ✅')}catch(e){toast(w.number)}};
+  }
+  updWa();
+}
+function updWa(){
+  const tid=$('#tid').value.trim(),m={easypaisa:'Easypaisa',jazzcash:'JazzCash',card:'Card'}[payM];
+  $('#waProof').classList.toggle('dim',!tid);
+  $('#waProof').href=waLink(SHOP.whatsapp,`Assalam o Alaikum! 🎁 Maine Surprise Maker ke liye payment kar di hai.\n\nOrder: ${S.order}\nAmount: ${SHOP.currency} ${SHOP.price}\nMethod: ${m}\nTID: ${tid}\nFor: ${S.name} (${RELS[S.rel].label} · ${S.occ})\n\nPlease unlock code bhej dein.`);
+}
+function initEditor(){
+  try{S=JSON.parse(localStorage.getItem('bdayDraft'))}catch(e){}
+  S=Object.assign(structuredClone(DEFAULT),S||{});
+  $('#brand').textContent=BRAND;
+  FIELDS.forEach(id=>{
+    const el=$('#'+id); el.value=S[id]; if(id==='name'||id==='from'){el.onfocus=()=>el._old=S[id];el.onchange=()=>{syncName(el._old,el.value);el._old=el.value}} el.oninput=()=>{S[id]=id==='candles'?Math.max(1,Math.min(9,+el.value||1)):el.value; if(id==='letter')$('#lcount').textContent=el.value.length+' / 2000'; save()};
+  });
+  $('#lcount').textContent=S.letter.length+' / 2000';
+  $('#passcode').addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'');S.passcode=e.target.value;save()});
+  $('#playMusic').checked=S.playMusic; $('#playMusic').onchange=e=>{S.playMusic=e.target.checked;save()};
+  // themes
+  for(const [k,[a,b,n]] of Object.entries(THEMES)){const d=document.createElement('div');d.className='th'+(S.theme===k?' sel':'');d.dataset.k=k;d.style.background=`linear-gradient(135deg,${a},${b})`;d.innerHTML=`<small>${n}</small>`;
+    d.onclick=()=>{S.theme=k;document.querySelectorAll('.th').forEach(x=>x.classList.remove('sel'));d.classList.add('sel');save()};$('#themes').appendChild(d)}
+  for(const [k,r] of Object.entries(RELS)){const d=document.createElement('div');d.className='rel';d.dataset.r=k;d.innerHTML=`<b>${r.emoji}</b>${r.label}`;
+    d.onclick=()=>{S.rel=k;if(!r.couple)S.occ='birthday';applyPreset()};$('#rels').appendChild(d)}
+  document.querySelectorAll('#occ button').forEach(b=>b.onclick=()=>{if(b.dataset.o==='anniversary'&&!RELS[S.rel].couple){S.rel='wife'}S.occ=b.dataset.o;applyPreset()});
+  refresh();
+  if(!S.order){S.order=newOrder();save()}
+  verifyCode(S.order,S.unlockCode).then(ok=>{UNLOCKED=ok;applyLock()});applyLock();
+  $('#lockBadge').onclick=()=>{if(!UNLOCKED)openPay()};
+  $('#payClose').onclick=closePay;
+  $('#pay').onclick=e=>{if(e.target.id==='pay')closePay()};
+  ['name','from'].forEach(id=>$('#'+id).addEventListener('change',()=>{if(!UNLOCKED)fillPay()}));
+  $('#wOld').textContent=SHOP.oldPrice?`${SHOP.currency} ${SHOP.oldPrice}`:'';$('#wPrice').textContent=`${SHOP.currency} ${SHOP.price}`;
+  $('#wStart').onclick=()=>$('#welcome').classList.remove('on');
+  $('#wPay').onclick=()=>{$('#welcome').classList.remove('on');openPay()};
+  verifyCode(S.order,S.unlockCode).then(ok=>{let seen=false;try{seen=sessionStorage.getItem('smWelcome')}catch(e){}
+    if(!ok&&!seen){$('#welcome').classList.add('on');try{sessionStorage.setItem('smWelcome','1')}catch(e){}}});
+  document.querySelectorAll('#payTabs button').forEach(b=>b.onclick=()=>{payM=b.dataset.m;renderPay()});
+  $('#tid').oninput=updWa;
+  $('#waProof').onclick=e=>{if(!$('#tid').value.trim()){e.preventDefault();toast('Pehle Transaction ID (TID) likhein');$('#tid').focus()}};
+  $('#unlockBtn').onclick=async()=>{const c=$('#code').value.trim();if(!c)return toast('Unlock code paste karein');
+    if(await verifyCode(S.order,c)){S.unlockCode=c;UNLOCKED=true;save();$('#pay').classList.remove('on');applyLock();toast('🎉 Unlocked! Ab photos lagayein aur link/download karein')}
+    else toast('❌ Code galat hai ya kisi aur order ka hai')};
+  let sure=false;$('#newGift').onclick=()=>{if(!sure){sure=true;$('#newGift').textContent='Sure? Names & photos reset ho jayenge — tap again';setTimeout(()=>{sure=false;$('#newGift').textContent='➕ Start a new surprise (new order)'},4000);return}
+    sure=false;S.order=newOrder();S.unlockCode='';S.photos.forEach(p=>p.img='');UNLOCKED=false;save();applyLock();$('#newGift').textContent='➕ Start a new surprise (new order)';window.scrollTo({top:0,behavior:'smooth'});toast('New order: '+S.order)};
+  $('#addReason').onclick=()=>{if(S.reasons.length>=10)return toast('Max 10 reasons');S.reasons.push({emoji:'💖',text:''});renderReasons();save()};
+}
+function renderPhotos(){
+  const box=$('#photos'); box.innerHTML='';
+  while(S.photos.length<6)S.photos.push({img:'',emoji:EMOJIS[S.photos.length],caption:''});
+  S.photos.forEach((p,i)=>{
+    const d=document.createElement('div'); d.className='ph';
+    d.innerHTML=`<div class="pic ${p.img?'has':''}" style="${p.img?`background-image:url(${p.img})`:''}">${p.img?'':p.emoji}<span class="x">✕</span>${p.img?'':'<span class="add">+ photo</span>'}</div><input placeholder="caption" maxlength="28">`;
+    const inp=d.querySelector('input'); inp.value=p.caption; inp.oninput=()=>{p.caption=inp.value;save()};
+    const pic=d.querySelector('.pic');
+    if(!UNLOCKED){pic.classList.remove('has');pic.style.backgroundImage='';pic.innerHTML=`${p.emoji}<span class="lk">🔒 unlock</span>`;pic.onclick=openPay;box.appendChild(d);return}
+    pic.onclick=e=>{ if(e.target.classList.contains('x')){p.img='';renderPhotos();save();return}
+      const f=document.createElement('input');f.type='file';f.accept='image/*';f.onchange=async()=>{if(!f.files[0])return;toast('Adding photo…');p.img=await shrink(f.files[0]);renderPhotos();save();toast('Photo added ✅')};f.click() };
+    box.appendChild(d);
+  });
+}
+function shrink(file,max=800){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,max/Math.max(im.width,im.height));const c=document.createElement('canvas');c.width=im.width*k;c.height=im.height*k;c.getContext('2d').drawImage(im,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',.8))};im.onerror=rej;im.src=r.result};r.readAsDataURL(file)})}
+function renderReasons(){
+  const box=$('#reasons'); box.innerHTML='';
+  S.reasons.forEach((r,i)=>{const d=document.createElement('div');d.className='reason';
+    d.innerHTML=`<input maxlength="4"><input maxlength="70" placeholder="Reason #${i+1}"><button title="remove">✕</button>`;
+    const [e,t]=d.querySelectorAll('input'); e.value=r.emoji; t.value=r.text;
+    e.oninput=()=>{r.emoji=e.value;save()}; t.oninput=()=>{r.text=t.value;save()};
+    d.querySelector('button').onclick=()=>{if(S.reasons.length<=1)return toast('Keep at least 1 reason');S.reasons.splice(i,1);renderReasons();save()};
+    box.appendChild(d)});
+}
+function cfg(){
+  const c=structuredClone(S);
+  c.reasons=c.reasons.filter(r=>r.text.trim()); if(!c.reasons.length)c.reasons=[{emoji:'💖',text:'You are simply the best'}];
+  c.name=c.name.trim()||'You'; c.candles=+c.candles||5;
+  ['order','unlockCode','occ','rel'].forEach(k=>delete c[k]);
+  if(!UNLOCKED)c.photos=c.photos.map(p=>({...p,img:''}));
+  return c;
+}
+function valid(){
+  if(!S.name.trim()){toast('Birthday person ka naam likhein 🎂');$('#name').focus();return false}
+  if(!/^\d{4,6}$/.test(S.passcode)){toast('Passcode 4–6 digits ka hona chahiye 🔐');$('#passcode').focus();return false}
+  return true;
+}
+
+$('#preview').onclick=()=>{if(!valid())return;$('#frame').srcdoc=buildGift({...cfg(),__preview:!UNLOCKED});$('#pv').classList.add('on')};
+$('#pvClose').onclick=()=>{$('#pv').classList.remove('on');$('#frame').srcdoc=''};
+$('#download').onclick=()=>{
+  if(!valid())return;
+  if(!UNLOCKED)return openPay();
+  try{const blob=new Blob([buildGift(cfg())],{type:'text/html'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+    a.download=`Happy-Birthday-${(S.name||'gift').replace(/[^\w]+/g,'-')}.html`;document.body.appendChild(a);a.click();a.remove();
+    toast('Downloaded ✅ — yeh file WhatsApp par bhejein ya Netlify Drop par upload karein')}
+  catch(e){toast('Download yahan block hai — apni hosted website par try karein')}
+};
+$('#link').onclick=async()=>{
+  if(!valid())return;
+  if(!UNLOCKED)return openPay();
+  const c=cfg(); c.photos=c.photos.map(p=>({...p,img:''}));
+  const url=location.href.split('#')[0]+'#g'+await pack(c);
+  $('#linkOut').value=url; $('#linkBox').classList.add('on'); $('#linkBox').scrollIntoView({behavior:'smooth'});
+  try{await navigator.clipboard.writeText(url);toast('Link copied! 🔗 WhatsApp par paste karein')}catch(e){toast('Link neeche hai — copy kar lein')}
+};
+/* ---------- open as gift if link has data ---------- */
+(async()=>{
+  const m=location.hash.match(/^#g=?(.+)$/);
+  if(m){try{const cfg=await unpack(m[1]);document.title='A Little Surprise For You 🎁';$('#pvClose').remove();$('#frame').srcdoc=buildGift(cfg);$('#pv').classList.add('on');document.body.style.overflow='hidden';return}catch(e){console.warn(e)}}
+  initEditor();
+})();
+
+</script>
+</body>
+</html>
