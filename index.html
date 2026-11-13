@@ -114,7 +114,7 @@ footer{text-align:center;font-size:12px;color:var(--mute);margin-top:8px}
     <h2>💝 Who is this surprise for?</h2>
     <div class="seg" id="occ"><button data-o="birthday">🎂 Birthday</button><button data-o="anniversary">💍 Anniversary</button></div>
     <div class="rels" id="rels"></div>
-    <p class="hint" id="relHint">Rishta chunte hi saari wishes, letter aur reasons usi hisaab se ban jaate hain — phir jo chahein badal lein ✏️</p>
+    <p class="hint" id="relHint">Pick a relationship and all the wishes, letter and reasons are filled in to match — then edit anything you like ✏️</p>
   </div>
 
   <div class="card">
@@ -185,13 +185,13 @@ footer{text-align:center;font-size:12px;color:var(--mute);margin-top:8px}
   <div class="card" id="payCard">
     <h2 id="payCardTitle">💳 Payment & unlock</h2>
     <div id="payHome"></div>
-    <div id="paidBox" style="display:none;text-align:center;font-size:14px">✅ Payment confirmed — order <b id="paidOrder"></b><br><span class="hint">Ab photos lagayein aur neeche se Download / Get link karein.</span></div>
+    <div id="paidBox" style="display:none;text-align:center;font-size:14px">✅ Payment confirmed — order <b id="paidOrder"></b><br><span class="hint">Now add your photos, then use Download / Get link below.</span></div>
   </div>
 
   <div class="card" id="linkBox">
     <h2>🔗 Your gift link</h2>
     <input id="linkOut" readonly onclick="this.select()">
-    <p class="hint">Link mein photos shamil nahi hotin (link chhota rakhne ke liye). Photos ke saath bhejne ke liye "Download" wali file use karein.</p>
+    <p class="hint">The link doesn't include photos (to keep it short). To send photos too, use the "Download" file.</p>
   </div>
 
   <footer><div id="brand"></div><button id="newGift">➕ Start a new surprise (new order)</button></footer>
@@ -216,22 +216,22 @@ footer{text-align:center;font-size:12px;color:var(--mute);margin-top:8px}
   <div class="paybody" id="payBody"></div>
   <label>Transaction ID (TID) / Reference</label><input id="tid" placeholder="e.g. 31245678901" maxlength="30">
   <a class="wa dim" id="waProof" target="_blank" rel="noopener">📲 Send payment proof on WhatsApp</a>
-  <p class="hint" style="text-align:center">Payment check karke 5–15 minute mein WhatsApp par aapka unlock code aa jayega.</p>
+  <p class="hint" style="text-align:center">We'll verify your payment and send your unlock code on WhatsApp within 5–15 minutes.</p>
   <hr>
-  <label>Unlock code mil gaya? Yahan paste karein 👇</label>
+  <label>Got your unlock code? Paste it here 👇</label>
   <div class="unl"><input id="code" placeholder="SM1-…"><button id="unlockBtn">Unlock</button></div>
   <a class="dfy" id="dfy" target="_blank" rel="noopener"></a>
   </div>
 </div></div>
 <div class="sheet" id="welcome"><div class="sheet-box" style="text-align:center">
   <div style="font-size:54px">🎁</div>
-  <div class="ptitle" style="font-size:22px">Apni surprise website banayein</div>
+  <div class="ptitle" style="font-size:22px">Create your own surprise website</div>
   <p class="hint" style="font-size:14px;margin:6px 0 4px">Birthday & anniversary — sister, brother, bestie, husband, wife, GF, BF, mom, dad 💖</p>
   <div class="price"><s id="wOld"></s><b id="wPrice"></b></div>
-  <div class="how"><div><b>1</b>Free mein banao & preview dekho 👀</div><div><b>2</b>Easypaisa / JazzCash / Card se pay karo 💳</div><div><b>3</b>Photos lagao, link ya file bhejo 🎉</div></div>
+  <div class="how"><div><b>1</b>Create & preview for free 👀</div><div><b>2</b>Pay with Easypaisa / JazzCash / Card 💳</div><div><b>3</b>Add photos, then send the link or file 🎉</div></div>
   <div class="methods"><span class="m ep">easypaisa</span><span class="m jc">JazzCash</span><span class="m cd">VISA · Mastercard</span></div>
-  <button class="btn1" id="wStart">✨ Free mein banana shuru karein</button>
-  <button class="btn2" id="wPay">💳 Abhi pay karein</button>
+  <button class="btn1" id="wStart">✨ Start creating for free</button>
+  <button class="btn2" id="wPay">💳 Pay now</button>
 </div></div>
 <div id="toast"></div>
 
@@ -411,9 +411,9 @@ function closePay(){$('#pay').classList.remove('on');if(!UNLOCKED)placePanel(fal
 function fillPay(){
   $('#priceTx').textContent=`${SHOP.currency} ${SHOP.price}`;$('#oldPrice').textContent=SHOP.oldPrice?`${SHOP.currency} ${SHOP.oldPrice}`:'';
   $('#pOrder').textContent=S.order;
-  $('#pFor').textContent=`🎁 For: ${S.name||'—'}  ·  From: ${S.from||'—'} — naam check kar lein, payment ke baad change nahi honge.`;
-  $('#dfy').textContent=`Khud nahi banana? Hum aap ke liye bana dein — ${SHOP.currency} ${SHOP.doneForYouPrice} →`;
-  $('#dfy').href=waLink(SHOP.whatsapp,`Assalam o Alaikum! Mujhe done-for-you surprise website chahiye (${SHOP.currency} ${SHOP.doneForYouPrice}).\nFor: ${S.name} (${RELS[S.rel].label} ${S.occ})`);
+  $('#pFor').textContent=`🎁 For: ${S.name||'—'}  ·  From: ${S.from||'—'} · Please double-check the names. They can't be changed after payment.`;
+  $('#dfy').textContent=`Don't want to make it yourself? We'll make it for you — ${SHOP.currency} ${SHOP.doneForYouPrice} →`;
+  $('#dfy').href=waLink(SHOP.whatsapp,`Hello! I'd like a done-for-you surprise website (${SHOP.currency} ${SHOP.doneForYouPrice}).\nFor: ${S.name} (${RELS[S.rel].label} ${S.occ})`);
   renderPay();
 }
 function openPay(){fillPay();placePanel(true);$('#pay').classList.add('on')}
@@ -421,12 +421,12 @@ function renderPay(){
   document.querySelectorAll('#payTabs button').forEach(b=>b.classList.toggle('sel',b.dataset.m===payM));
   const body=$('#payBody'),amt=`${SHOP.currency} ${SHOP.price}`;
   if(payM==='card'){
-    body.innerHTML=SHOP.cardLink?`<b>Visa / Mastercard</b><br>Neeche button se ${amt} pay karein, phir receipt ka Reference/TID neeche likhein.<a class="paylink" href="${SHOP.cardLink}" target="_blank" rel="noopener">💳 Pay ${amt} by card</a>`
-      :`💳 Card payment jald aa raha hai.<br>Abhi <b>Easypaisa</b> ya <b>JazzCash</b> se pay karein — 1 minute lagta hai.`;
+    body.innerHTML=SHOP.cardLink?`<b>Visa / Mastercard</b><br>Use the button below to pay ${amt}, then enter the receipt's Reference/TID below.<a class="paylink" href="${SHOP.cardLink}" target="_blank" rel="noopener">💳 Pay ${amt} by card</a>`
+      :`💳 Card payment is coming soon.<br>For now, please pay with <b>Easypaisa</b> or <b>JazzCash</b> — it takes about 1 minute.`;
   }else{
     const w=SHOP[payM],nm=payM==='easypaisa'?'Easypaisa':'JazzCash';
-    body.innerHTML=`<b>1.</b> Apni ${nm} app kholein → <b>Send Money</b><br><b>2.</b> Is number par <b>${amt}</b> bhejein:
-      <div class="num"><span>${w.number}</span><button class="cpn">Copy</button></div>Account title: <b>${w.title}</b><br><b>3.</b> Transaction ID (TID) neeche likh kar WhatsApp par bhejein.`;
+    body.innerHTML=`<b>1.</b> Open your ${nm} app → <b>Send Money</b><br><b>2.</b> Send <b>${amt}</b> to this number:
+      <div class="num"><span>${w.number}</span><button class="cpn">Copy</button></div>Account title: <b>${w.title}</b><br><b>3.</b> Enter your Transaction ID (TID) below and send it on WhatsApp.`;
     body.querySelector('.cpn').onclick=async()=>{try{await navigator.clipboard.writeText(w.number.replace(/\D/g,''));toast('Number copied ✅')}catch(e){toast(w.number)}};
   }
   updWa();
@@ -434,7 +434,7 @@ function renderPay(){
 function updWa(){
   const tid=$('#tid').value.trim(),m={easypaisa:'Easypaisa',jazzcash:'JazzCash',card:'Card'}[payM];
   $('#waProof').classList.toggle('dim',!tid);
-  $('#waProof').href=waLink(SHOP.whatsapp,`Assalam o Alaikum! 🎁 Maine Surprise Maker ke liye payment kar di hai.\n\nOrder: ${S.order}\nAmount: ${SHOP.currency} ${SHOP.price}\nMethod: ${m}\nTID: ${tid}\nFor: ${S.name} (${RELS[S.rel].label} · ${S.occ})\n\nPlease unlock code bhej dein.`);
+  $('#waProof').href=waLink(SHOP.whatsapp,`Hello! 🎁 I've paid for Surprise Maker.\n\nOrder: ${S.order}\nAmount: ${SHOP.currency} ${SHOP.price}\nMethod: ${m}\nTID: ${tid}\nFor: ${S.name} (${RELS[S.rel].label} · ${S.occ})\n\nPlease send me my unlock code.`);
 }
 function initEditor(){
   try{S=JSON.parse(localStorage.getItem('bdayDraft'))}catch(e){}
@@ -466,11 +466,11 @@ function initEditor(){
     if(!ok&&!seen){$('#welcome').classList.add('on');try{sessionStorage.setItem('smWelcome','1')}catch(e){}}});
   document.querySelectorAll('#payTabs button').forEach(b=>b.onclick=()=>{payM=b.dataset.m;renderPay()});
   $('#tid').oninput=updWa;
-  $('#waProof').onclick=e=>{if(!$('#tid').value.trim()){e.preventDefault();toast('Pehle Transaction ID (TID) likhein');$('#tid').focus()}};
-  $('#unlockBtn').onclick=async()=>{const c=$('#code').value.trim();if(!c)return toast('Unlock code paste karein');
-    if(await verifyCode(S.order,c)){S.unlockCode=c;UNLOCKED=true;save();$('#pay').classList.remove('on');applyLock();toast('🎉 Unlocked! Ab photos lagayein aur link/download karein')}
-    else toast('❌ Code galat hai ya kisi aur order ka hai')};
-  let sure=false;$('#newGift').onclick=()=>{if(!sure){sure=true;$('#newGift').textContent='Sure? Names & photos reset ho jayenge — tap again';setTimeout(()=>{sure=false;$('#newGift').textContent='➕ Start a new surprise (new order)'},4000);return}
+  $('#waProof').onclick=e=>{if(!$('#tid').value.trim()){e.preventDefault();toast('Please enter your Transaction ID (TID) first');$('#tid').focus()}};
+  $('#unlockBtn').onclick=async()=>{const c=$('#code').value.trim();if(!c)return toast('Please paste your unlock code');
+    if(await verifyCode(S.order,c)){S.unlockCode=c;UNLOCKED=true;save();$('#pay').classList.remove('on');applyLock();toast('🎉 Unlocked! Now add your photos and get your link/download')}
+    else toast('❌ Wrong code, or it belongs to a different order')};
+  let sure=false;$('#newGift').onclick=()=>{if(!sure){sure=true;$('#newGift').textContent='Sure? Names & photos will be reset — tap again';setTimeout(()=>{sure=false;$('#newGift').textContent='➕ Start a new surprise (new order)'},4000);return}
     sure=false;S.order=newOrder();S.unlockCode='';S.photos.forEach(p=>p.img='');UNLOCKED=false;save();applyLock();$('#newGift').textContent='➕ Start a new surprise (new order)';window.scrollTo({top:0,behavior:'smooth'});toast('New order: '+S.order)};
   $('#addReason').onclick=()=>{if(S.reasons.length>=10)return toast('Max 10 reasons');S.reasons.push({emoji:'💖',text:''});renderReasons();save()};
 }
@@ -507,8 +507,8 @@ function cfg(){
   return c;
 }
 function valid(){
-  if(!S.name.trim()){toast('Birthday person ka naam likhein 🎂');$('#name').focus();return false}
-  if(!/^\d{4,6}$/.test(S.passcode)){toast('Passcode 4–6 digits ka hona chahiye 🔐');$('#passcode').focus();return false}
+  if(!S.name.trim()){toast('Please enter the name 🎂');$('#name').focus();return false}
+  if(!/^\d{4,6}$/.test(S.passcode)){toast('Passcode must be 4–6 digits 🔐');$('#passcode').focus();return false}
   return true;
 }
 
@@ -519,8 +519,8 @@ $('#download').onclick=()=>{
   if(!UNLOCKED)return openPay();
   try{const blob=new Blob([buildGift(cfg())],{type:'text/html'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);
     a.download=`Happy-Birthday-${(S.name||'gift').replace(/[^\w]+/g,'-')}.html`;document.body.appendChild(a);a.click();a.remove();
-    toast('Downloaded ✅ — yeh file WhatsApp par bhejein ya Netlify Drop par upload karein')}
-  catch(e){toast('Download yahan block hai — apni hosted website par try karein')}
+    toast('Downloaded ✅ — send this file on WhatsApp or upload it to Netlify Drop')}
+  catch(e){toast('Download is blocked here — please try it on your hosted website')}
 };
 $('#link').onclick=async()=>{
   if(!valid())return;
@@ -528,7 +528,7 @@ $('#link').onclick=async()=>{
   const c=cfg(); c.photos=c.photos.map(p=>({...p,img:''}));
   const url=location.href.split('#')[0]+'#g'+await pack(c);
   $('#linkOut').value=url; $('#linkBox').classList.add('on'); $('#linkBox').scrollIntoView({behavior:'smooth'});
-  try{await navigator.clipboard.writeText(url);toast('Link copied! 🔗 WhatsApp par paste karein')}catch(e){toast('Link neeche hai — copy kar lein')}
+  try{await navigator.clipboard.writeText(url);toast('Link copied! 🔗 Paste it on WhatsApp')}catch(e){toast('The link is below — please copy it')}
 };
 /* ---------- open as gift if link has data ---------- */
 (async()=>{
